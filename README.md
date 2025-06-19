@@ -6,13 +6,13 @@ A command-line tool for evaluating third-party vendor security postures based on
 
 ## Features
 
-- **Automated Security Assessment**: Retrieves SecurityScorecard ratings and public security documentation
-- **Risk Classification**: Automatically classifies vendors based on multiple risk factors
-- **Approval Determination**: Provides approval status (Approved, Conditionally Approved, Rejected)
-- **Compliance Checking**: Verifies SOC 2 Type 2, ISO 27001, and other certifications
-- **Template Generation**: Creates ready-to-send stakeholder communications
-- **Public Issue Scanning**: Identifies data breaches, vulnerabilities, and negative news
-- **Complementary Controls**: Provides user entity controls for critical vendors
+- **Clear Business Decisions**: Provides definitive APPROVED, CONDITIONALLY APPROVED, or REJECTED outcomes
+- **Automated Risk Assessment**: Evaluates vendors using SecurityScorecard ratings and public security data
+- **Alternative Vendor Suggestions**: Recommends pre-approved alternatives for rejected vendors
+- **Actionable Next Steps**: Clear guidance on what to do after each decision
+- **Business-Focused Rationale**: Explains decisions in business terms, not technical jargon
+- **Smart Conditional Approval**: Identifies specific requirements for conditional approvals
+- **Compliance Integration**: Automatically checks SOC 2 Type 2, ISO 27001, and security certifications
 
 ## Installation
 
@@ -95,42 +95,48 @@ npm run cli config
 - **Conditionally Approved**: Pending specific remediation items (30-day timeline)
 - **Rejected**: Does not meet minimum requirements, requires significant remediation
 
-## Output
+## Decision Outcomes
 
-The tool generates:
+The tool provides one of three clear decisions:
 
-1. **Risk Determination Summary**
-   - SecurityScorecard rating and grade
-   - Certification status (SOC 2, ISO 27001)
-   - Public security issues found
-   - Risk classification with justification
-   - Approval status and reasoning
+### 🟢 APPROVED
+- **What it means**: Vendor meets all security requirements
+- **Next steps**: Proceed with onboarding and implementation
+- **Example**: Microsoft Teams for collaboration
 
-2. **Response Template**
-   - Pre-formatted email template
-   - Customized based on approval status
-   - Includes all relevant findings and next steps
+### 🟡 CONDITIONALLY APPROVED  
+- **What it means**: Vendor can be used with specific requirements
+- **Next steps**: Complete requirements within 30 days for full approval
+- **Example**: Vendor needs to provide SOC 2 certification
 
-3. **Saved Assessment File** (optional)
-   - Markdown format with full details
-   - Timestamped filename
-   - Includes both summary and template
+### 🔴 NOT APPROVED
+- **What it means**: Vendor doesn't meet minimum security standards
+- **Next steps**: Use suggested alternatives or wait for vendor improvements
+- **Example**: Poor security score, recent data breaches
 
 ## Example Output
 
 ```
-## Risk Determination Summary
+# VENDOR ASSESSMENT RESULT
 
-- **SecurityScorecard rating:** 85 (B) - [View Report](https://securityscorecard.com/...)
-- **SOC 2 Type 2:** ✓ Available - [View](https://vendor.com/trust)
-- **ISO 27001:** ✗ Not confirmed
-- **Trust Center:** [https://vendor.com/trust](https://vendor.com/trust)
-- **Public security issues:** None identified
-- **Risk classification:** High with justification:
-  - Handles sensitive data for 500 users (High threshold: 50)
-  - SecurityScorecard rating: 85 (B)
-  - SOC 2 Type 2 certification available
-- **Approval status:** Approved
+## 🟢 APPROVED
+
+**Vendor:** Microsoft Teams
+**Decision:** Approved for use
+**Assessment Date:** 6/19/2025
+
+### Rationale
+Microsoft Teams has been approved based on the following factors:
+
+✓ Strong security posture (SecurityScorecard: A)
+✓ No significant public security issues identified  
+✓ Meets security requirements for medium risk classification
+
+### Next Steps
+1. **Proceed with vendor onboarding** - You may begin using this vendor
+2. **Contract review** - Ensure security requirements are included
+3. **Implementation planning** - Work with IT to set up secure integration
+4. **Schedule annual review** - Set reminder for next year's assessment
 ```
 
 ## Development
