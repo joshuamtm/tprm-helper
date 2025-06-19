@@ -92,38 +92,93 @@
 
                     <!-- Risk Classification -->
                     <div class="form-section">
-                        <h3 class="text-lg font-semibold text-gray-700 mb-4">Risk Assessment</h3>
+                        <div class="flex items-center justify-between mb-4">
+                            <h3 class="text-lg font-semibold text-gray-700">Risk Assessment</h3>
+                            <button type="button" id="risk-guidance-btn" class="text-purple-600 hover:text-purple-800 text-sm font-medium">
+                                <i class="fas fa-question-circle mr-1"></i>Need Help Classifying?
+                            </button>
+                        </div>
+                        
+                        <!-- Risk Classification Guidance Panel -->
+                        <div id="risk-guidance" class="hidden bg-blue-50 border border-blue-200 rounded-lg p-4 mb-6">
+                            <h4 class="font-semibold text-blue-900 mb-3">Risk Classification Guide</h4>
+                            <div class="space-y-3 text-sm">
+                                <div class="border-l-4 border-red-400 pl-3">
+                                    <strong class="text-red-800">Critical:</strong> SSNs, payment data, PHI, financial systems, admin access to core systems
+                                    <div class="text-red-700 mt-1">Examples: Payroll systems, banking platforms, ERP systems with full access</div>
+                                </div>
+                                <div class="border-l-4 border-orange-400 pl-3">
+                                    <strong class="text-orange-800">High:</strong> Customer PII, employee data, important business functions
+                                    <div class="text-orange-700 mt-1">Examples: CRM with customer data, email platforms, document storage</div>
+                                </div>
+                                <div class="border-l-4 border-yellow-400 pl-3">
+                                    <strong class="text-yellow-800">Medium:</strong> Limited business data, moderate operational impact
+                                    <div class="text-yellow-700 mt-1">Examples: Project management tools, analytics platforms</div>
+                                </div>
+                                <div class="border-l-4 border-green-400 pl-3">
+                                    <strong class="text-green-800">Low:</strong> Public information, minimal business impact
+                                    <div class="text-green-700 mt-1">Examples: Website monitoring, general research tools</div>
+                                </div>
+                            </div>
+                            <div class="mt-3 p-3 bg-blue-100 rounded">
+                                <strong class="text-blue-900">Quick Decision Tree:</strong>
+                                <ol class="text-blue-800 text-sm mt-1 space-y-1">
+                                    <li>1. What data will the vendor access?</li>
+                                    <li>2. How many users will be affected?</li>
+                                    <li>3. What's the business impact if compromised?</li>
+                                </ol>
+                            </div>
+                        </div>
+                        
                         <div class="grid md:grid-cols-2 gap-6">
                             <div>
                                 <label for="risk-level" class="block text-sm font-medium text-gray-700 mb-2">
                                     Risk Classification *
+                                    <span class="text-xs text-gray-500">(Will auto-adjust based on data and users)</span>
                                 </label>
                                 <select id="risk-level" name="riskLevel" required
                                     class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent">
-                                    <option value="">Select risk level</option>
-                                    <option value="critical">Critical - Highly sensitive data or critical functions</option>
-                                    <option value="high">High - Sensitive data or important functions</option>
-                                    <option value="medium">Medium - Limited data access or moderate impact</option>
-                                    <option value="low">Low - Minimal data access and low impact</option>
+                                    <option value="">Select initial risk level</option>
+                                    <option value="critical">Critical - Regulated data, financial systems, core infrastructure</option>
+                                    <option value="high">High - Customer/employee PII, important business functions</option>
+                                    <option value="medium">Medium - Limited business data, moderate impact</option>
+                                    <option value="low">Low - Public data, minimal impact</option>
                                 </select>
                             </div>
                             
                             <div>
                                 <label for="user-count" class="block text-sm font-medium text-gray-700 mb-2">
                                     Number of Users *
+                                    <span class="text-xs text-gray-500">(1000+ users may escalate to Critical)</span>
                                 </label>
                                 <input type="number" id="user-count" name="userCount" required min="1"
                                     class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent"
-                                    placeholder="Number of users who will access this vendor">
+                                    placeholder="Total users who will access this vendor">
                             </div>
                         </div>
                         
                         <div class="mt-4">
-                            <label class="flex items-center">
+                            <label class="flex items-start">
                                 <input type="checkbox" id="sensitive-data" name="sensitiveData"
-                                    class="h-4 w-4 text-purple-600 focus:ring-purple-500 border-gray-300 rounded">
-                                <span class="ml-2 text-sm text-gray-700">This vendor will handle sensitive data</span>
+                                    class="h-4 w-4 text-purple-600 focus:ring-purple-500 border-gray-300 rounded mt-1">
+                                <div class="ml-2">
+                                    <span class="text-sm text-gray-700 font-medium">This vendor will handle sensitive data</span>
+                                    <div class="text-xs text-gray-500 mt-1">
+                                        Check if vendor will access: PII, financial data, PHI, SSNs, payment info, or proprietary business data
+                                    </div>
+                                </div>
                             </label>
+                        </div>
+                        
+                        <!-- Dynamic Risk Assessment Feedback -->
+                        <div id="risk-feedback" class="hidden mt-4 p-3 rounded-lg">
+                            <div class="flex items-start">
+                                <i class="fas fa-info-circle mt-1 mr-2"></i>
+                                <div>
+                                    <div class="font-medium" id="risk-feedback-title"></div>
+                                    <div class="text-sm mt-1" id="risk-feedback-text"></div>
+                                </div>
+                            </div>
                         </div>
                     </div>
 
@@ -133,22 +188,50 @@
                         <div>
                             <label for="use-case" class="block text-sm font-medium text-gray-700 mb-2">
                                 Intended Use Case *
+                                <span class="text-xs text-gray-500">(Be specific about data types and business functions)</span>
                             </label>
                             <textarea id="use-case" name="useCase" required rows="3"
                                 class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent"
-                                placeholder="Describe how this vendor will be used (e.g., cloud storage, video conferencing, data analytics)"></textarea>
+                                placeholder="Describe how this vendor will be used. Include: What data will be shared? What business process will it support? How will it integrate with existing systems?"></textarea>
+                            <div class="mt-2 text-xs text-gray-600">
+                                <strong>Examples of detailed descriptions:</strong><br>
+                                • "CRM for storing customer contact info, sales pipeline, and communication history"<br>
+                                • "File storage for marketing materials and internal documents (no customer data)"<br>
+                                • "Payroll processing including employee SSNs, bank accounts, and salary information"
+                            </div>
                         </div>
                     </div>
 
                     <!-- Optional Security Reports -->
                     <div class="form-section">
                         <h3 class="text-lg font-semibold text-gray-700 mb-4">Security Documentation (Optional)</h3>
-                        <p class="text-sm text-gray-600 mb-4">Upload any available security reports to improve assessment accuracy:</p>
+                        <div class="bg-green-50 border border-green-200 rounded-lg p-4 mb-4">
+                            <div class="flex items-start">
+                                <i class="fas fa-lightbulb text-green-600 mt-1 mr-2"></i>
+                                <div class="text-sm">
+                                    <strong class="text-green-800">Improve Your Assessment:</strong>
+                                    <div class="text-green-700 mt-1">
+                                        Uploading security documentation can significantly improve assessment accuracy and may lead to approval for vendors that would otherwise be rejected.
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <p class="text-sm text-gray-600 mb-4">Upload any available security reports and certifications:</p>
                         
                         <div class="upload-area p-6 rounded-lg text-center" id="upload-area">
                             <i class="fas fa-cloud-upload-alt text-4xl text-gray-400 mb-4"></i>
                             <p class="text-gray-600 mb-2">Drag and drop files here, or click to select</p>
-                            <p class="text-sm text-gray-500">Supported: SOC 2 Type 2, ISO 27001, Penetration Test Reports, Security Scorecards</p>
+                            <div class="text-sm text-gray-500">
+                                <div class="mb-2"><strong>Most Valuable Documents:</strong></div>
+                                <div class="grid grid-cols-2 gap-2 text-xs">
+                                    <div>• SOC 2 Type 2 Reports</div>
+                                    <div>• ISO 27001 Certificates</div>
+                                    <div>• Penetration Test Results</div>
+                                    <div>• Security Scorecards</div>
+                                    <div>• Compliance Attestations</div>
+                                    <div>• Risk Assessments</div>
+                                </div>
+                            </div>
                             <input type="file" id="file-input" multiple accept=".pdf,.doc,.docx,.txt"
                                 class="hidden">
                         </div>
