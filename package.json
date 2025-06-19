@@ -1,16 +1,10 @@
 {
   "name": "tprm-helper",
   "version": "1.0.0",
-  "description": "Third-Party Risk Management (TPRM) vendor security assessment tool",
-  "main": "dist/index.js",
-  "bin": {
-    "tprm-helper": "./dist/index.js"
-  },
+  "description": "Web-based Third-Party Risk Management (TPRM) vendor security assessment tool",
+  "main": "docs/index.html",
   "scripts": {
-    "build": "tsc",
-    "dev": "tsx watch src/index.ts",
-    "start": "node dist/index.js",
-    "cli": "tsx src/index.ts",
+    "start": "open docs/index.html",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -24,10 +18,11 @@
     "security-assessment",
     "compliance",
     "risk-management",
-    "cli-tool",
-    "securityscorecard",
+    "web-application",
     "soc2",
-    "iso27001"
+    "iso27001",
+    "vendor-security",
+    "risk-assessment"
   ],
   "author": "Joshua MTM",
   "license": "MIT",

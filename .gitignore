@@ -3,9 +3,12 @@ node_modules/
 
 # Build outputs
 dist/
-*.js
+src/**/*.js
 *.js.map
 *.d.ts
+
+# Allow web app JavaScript
+!docs/app.js
 
 # Environment variables
 .env

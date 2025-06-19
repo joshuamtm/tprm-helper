@@ -1,219 +1,122 @@
-# TPRM Helper - Third-Party Risk Management Tool
+# TPRM Helper - Vendor Security Assessment Tool
 
-[![GitHub Pages](https://img.shields.io/badge/docs-GitHub%20Pages-blue)](https://joshuamtm.github.io/tprm-helper/)
+[![GitHub Pages](https://img.shields.io/badge/app-live-green)](https://joshuamtm.github.io/tprm-helper/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![Node.js](https://img.shields.io/badge/Node.js-18%2B-green)](https://nodejs.org/)
-[![TypeScript](https://img.shields.io/badge/TypeScript-5.0-blue)](https://www.typescriptlang.org/)
 
-A command-line tool for evaluating third-party vendor security postures and providing clear **APPROVED**, **CONDITIONALLY APPROVED**, or **REJECTED** decisions based on automated risk assessment.
+A professional web-based tool for evaluating third-party vendor security postures and providing clear **APPROVED**, **CONDITIONALLY APPROVED**, or **REJECTED** decisions based on automated risk assessment.
 
-🌐 **Documentation**: [https://joshuamtm.github.io/tprm-helper/](https://joshuamtm.github.io/tprm-helper/)
-
-## Table of Contents
-
-- [Features](#features)
-- [Decision Outcomes](#decision-outcomes)
-- [Installation](#installation)
-- [Usage](#usage)
-- [Risk Framework](#risk-framework)
-- [Example Output](#example-output)
-- [Configuration](#configuration)
-- [Contributing](#contributing)
-- [License](#license)
+🌐 **Live Application**: [https://joshuamtm.github.io/tprm-helper/](https://joshuamtm.github.io/tprm-helper/)
 
 ## Features
 
-- **Clear Business Decisions**: Provides definitive APPROVED, CONDITIONALLY APPROVED, or REJECTED outcomes
-- **Automated Risk Assessment**: Evaluates vendors using SecurityScorecard ratings and public security data
-- **Alternative Vendor Suggestions**: Recommends pre-approved alternatives for rejected vendors
-- **Actionable Next Steps**: Clear guidance on what to do after each decision
-- **Business-Focused Rationale**: Explains decisions in business terms, not technical jargon
-- **Smart Conditional Approval**: Identifies specific requirements for conditional approvals
-- **Compliance Integration**: Automatically checks SOC 2 Type 2, ISO 27001, and security certifications
+- **Web-Based Interface** - Simple form-based assessment process
+- **Clear Decision Outcomes** - APPROVED, CONDITIONALLY APPROVED, or REJECTED results
+- **Comprehensive Analysis** - Public security data, compliance verification, risk scoring
+- **File Upload Support** - Upload SOC 2, ISO 27001, pen test reports for enhanced accuracy
+- **Alternative Suggestions** - Recommends pre-approved alternatives for rejected vendors
+- **PDF Export** - Download assessment results as professional reports
+- **Real-Time Progress** - 3-5 minute assessment with live progress updates
 
-## Installation
+## How It Works
 
-```bash
-# Clone the repository
-git clone https://github.com/joshuamtm/tprm-helper.git
-cd tprm-helper
+### 1. Submit Assessment Request
+- Enter vendor name and website
+- Select risk classification (Critical/High/Medium/Low)
+- Specify number of users and data sensitivity
+- Describe intended use case
+- Optionally upload security documentation
 
-# Install dependencies
-npm install
+### 2. Automated Assessment (3-5 minutes)
+- Analyzes public security data
+- Scans for compliance certifications
+- Checks for security issues and breaches
+- Processes uploaded documentation
+- Applies risk assessment framework
 
-# Build the project
-npm run build
-```
+### 3. Receive Clear Decision
+- **🟢 APPROVED** - Ready to proceed with onboarding
+- **🟡 CONDITIONALLY APPROVED** - Specific requirements to fulfill
+- **🔴 REJECTED** - Alternative solutions provided
 
-## Usage
-
-### Interactive Mode (Default)
-
-```bash
-npm run cli
-```
-
-This will prompt you for:
-- Vendor name
-- Risk classification (Critical/High/Medium/Low)
-- Number of users
-- Whether sensitive data is shared
-- Intended use case
-
-### Quick Assessment Mode
-
-```bash
-npm run cli quick --name "Vendor Name" --risk high --users 100 --sensitive --case "Cloud storage for customer data"
-```
-
-Options:
-- `-n, --name <vendor>`: Vendor name (required)
-- `-r, --risk <level>`: Risk level - critical/high/medium/low (required)
-- `-u, --users <number>`: Number of users (required)
-- `-s, --sensitive`: Flag if vendor handles sensitive data
-- `-c, --case <description>`: Use case description (required)
-
-### Configuration
-
-To use real SecurityScorecard data (optional):
-
-```bash
-# Create .env file
-echo "SECURITYSCORECARD_API_KEY=your_api_key_here" > .env
-
-# Run config command for more info
-npm run cli config
-```
-
-## Risk Framework
+## Decision Framework
 
 ### Risk Classifications
+- **Critical**: Highly sensitive data or critical business functions
+- **High**: Sensitive data or important business operations
+- **Medium**: Limited data access or moderate business impact
+- **Low**: Minimal data access and low business impact
 
-1. **Critical**: Handles highly sensitive data, critical business functions, or has broad system access
-   - Requires SOC 2 Type 2 or ISO 27001
-   - SecurityScorecard grade B or higher
-   - Complementary User Entity Controls required
+### Assessment Criteria
+- Security posture and vulnerability management
+- Compliance certifications (SOC 2 Type 2, ISO 27001)
+- Public security incidents and breaches
+- Data handling and protection measures
+- Risk level appropriate controls
 
-2. **High**: Processes sensitive data or supports important business functions
-   - Requires security attestation
-   - SecurityScorecard grade C or higher
-   - Annual reviews required
+## Example Assessment Flow
 
-3. **Medium**: Limited data access or moderate business impact
-   - Basic security documentation required
-   - Periodic reviews
+1. **Request**: "Assess Slack for team communication (High risk, 150 users, sensitive data)"
+2. **Analysis**: Security scanning, compliance checking, public issue research
+3. **Result**: "CONDITIONALLY APPROVED - Provide SOC 2 certification within 30 days"
+4. **Next Steps**: Contact vendor for documentation, limited pilot use permitted
 
-4. **Low**: Minimal data access and low business impact
-   - Standard security checks
+## Supported Documentation
 
-### Approval Criteria
+Upload these file types to improve assessment accuracy:
+- SOC 2 Type 2 reports
+- ISO 27001 certificates
+- Penetration testing reports
+- Security scorecards
+- Compliance attestations
 
-- **Approved**: Meets all security requirements for the risk level
-- **Conditionally Approved**: Pending specific remediation items (30-day timeline)
-- **Rejected**: Does not meet minimum requirements, requires significant remediation
+## Data Sources
 
-## Decision Outcomes
+The tool analyzes publicly available information:
+- Company security pages and trust centers
+- Certificate transparency logs
+- Public breach databases
+- Security vulnerability disclosures
+- Domain and website security indicators
 
-The tool provides one of three clear decisions:
+## Privacy & Security
 
-### 🟢 APPROVED
-- **What it means**: Vendor meets all security requirements
-- **Next steps**: Proceed with onboarding and implementation
-- **Example**: Microsoft Teams for collaboration
+- **No data storage** - All assessments are session-based only
+- **Client-side processing** - No sensitive data sent to external servers
+- **Secure file handling** - Uploaded documents processed locally
+- **No tracking** - No user analytics or data collection
 
-### 🟡 CONDITIONALLY APPROVED  
-- **What it means**: Vendor can be used with specific requirements
-- **Next steps**: Complete requirements within 30 days for full approval
-- **Example**: Vendor needs to provide SOC 2 certification
+## Use Cases
 
-### 🔴 NOT APPROVED
-- **What it means**: Vendor doesn't meet minimum security standards
-- **Next steps**: Use suggested alternatives or wait for vendor improvements
-- **Example**: Poor security score, recent data breaches
+- **Procurement Teams** - Rapid vendor security assessment
+- **IT Security** - Standardized risk evaluation process
+- **Business Units** - Self-service vendor vetting
+- **Compliance** - Documented assessment records
+- **Risk Management** - Consistent decision framework
 
-## Example Output
+## Technical Details
 
-```
-# VENDOR ASSESSMENT RESULT
+- **Platform**: Web-based (works in any modern browser)
+- **Requirements**: No installation or setup required
+- **Compatibility**: Desktop and mobile responsive design
+- **Performance**: 3-5 minute assessment time
+- **Export**: PDF generation for record keeping
 
-## 🟢 APPROVED
+## Getting Started
 
-**Vendor:** Microsoft Teams
-**Decision:** Approved for use
-**Assessment Date:** 6/19/2025
+Simply visit [https://joshuamtm.github.io/tprm-helper/](https://joshuamtm.github.io/tprm-helper/) and start your first vendor assessment.
 
-### Rationale
-Microsoft Teams has been approved based on the following factors:
-
-✓ Strong security posture (SecurityScorecard: A)
-✓ No significant public security issues identified  
-✓ Meets security requirements for medium risk classification
-
-### Next Steps
-1. **Proceed with vendor onboarding** - You may begin using this vendor
-2. **Contract review** - Ensure security requirements are included
-3. **Implementation planning** - Work with IT to set up secure integration
-4. **Schedule annual review** - Set reminder for next year's assessment
-```
-
-## Development
-
-```bash
-# Run in development mode
-npm run dev
-
-# Build TypeScript
-npm run build
-
-# Run compiled version
-npm start
-```
-
-## Configuration
-
-### SecurityScorecard API (Optional)
-
-For real SecurityScorecard data, set your API key:
-
-```bash
-# Create .env file
-echo "SECURITYSCORECARD_API_KEY=your_api_key_here" > .env
-```
-
-Without an API key, the tool uses realistic mock data for demonstration.
-
-### Environment Variables
-
-- `SECURITYSCORECARD_API_KEY` - SecurityScorecard API key (optional)
-
-## Contributing
-
-We welcome contributions! Please see [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines.
-
-### Quick Start for Contributors
-
-1. Fork the repository
-2. Create a feature branch: `git checkout -b feature-name`
-3. Make your changes and test: `npm run build && npm run cli`
-4. Commit with descriptive message: `git commit -m "Add feature"`
-5. Push and create a Pull Request
-
-## Security
-
-If you discover a security vulnerability, please see our [Security Policy](SECURITY.md) for responsible disclosure guidelines.
+No registration, downloads, or setup required.
 
 ## Support
 
-- 📖 [Documentation](https://joshuamtm.github.io/tprm-helper/)
-- 🐛 [Issue Tracker](https://github.com/joshuamtm/tprm-helper/issues)
-- 💬 [Discussions](https://github.com/joshuamtm/tprm-helper/discussions)
+- 📖 [Live Application](https://joshuamtm.github.io/tprm-helper/)
+- 🐛 [Report Issues](https://github.com/joshuamtm/tprm-helper/issues)
+- 💬 [Feature Requests](https://github.com/joshuamtm/tprm-helper/discussions)
 
 ## License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
-## Acknowledgments
+---
 
-- SecurityScorecard for security rating data
-- NIST Cybersecurity Framework for risk classification guidance
-- SOC 2 and ISO 27001 standards for compliance requirements
+**Professional third-party risk management made simple.**
