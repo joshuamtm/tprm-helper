@@ -17,14 +17,25 @@
     "type": "git",
     "url": "git+https://github.com/joshuamtm/tprm-helper.git"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "keywords": [
+    "tprm",
+    "third-party-risk-management",
+    "vendor-assessment", 
+    "security-assessment",
+    "compliance",
+    "risk-management",
+    "cli-tool",
+    "securityscorecard",
+    "soc2",
+    "iso27001"
+  ],
+  "author": "Joshua MTM",
+  "license": "MIT",
   "type": "commonjs",
   "bugs": {
     "url": "https://github.com/joshuamtm/tprm-helper/issues"
   },
-  "homepage": "https://github.com/joshuamtm/tprm-helper#readme",
+  "homepage": "https://joshuamtm.github.io/tprm-helper/",
   "devDependencies": {
     "@types/inquirer": "^9.0.8",
     "@types/node": "^24.0.3",
