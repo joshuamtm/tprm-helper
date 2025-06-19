@@ -3,19 +3,35 @@
 [![GitHub Pages](https://img.shields.io/badge/app-live-green)](https://joshuamtm.github.io/tprm-helper/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-A professional web-based tool for evaluating third-party vendor security postures and providing clear **APPROVED**, **CONDITIONALLY APPROVED**, or **REJECTED** decisions based on automated risk assessment.
+A professional web-based tool for evaluating third-party vendor security postures with enhanced risk scoring algorithms, comprehensive user guidance, and detailed decision explanations. Provides clear **APPROVED**, **CONDITIONALLY APPROVED**, or **REJECTED** decisions based on enterprise-grade automated risk assessment.
 
 🌐 **Live Application**: [https://joshuamtm.github.io/tprm-helper/](https://joshuamtm.github.io/tprm-helper/)
 
 ## Features
 
-- **Web-Based Interface** - Simple form-based assessment process
-- **Clear Decision Outcomes** - APPROVED, CONDITIONALLY APPROVED, or REJECTED results
-- **Comprehensive Analysis** - Public security data, compliance verification, risk scoring
-- **File Upload Support** - Upload SOC 2, ISO 27001, pen test reports for enhanced accuracy
-- **Alternative Suggestions** - Recommends pre-approved alternatives for rejected vendors
-- **PDF Export** - Download assessment results as professional reports
-- **Real-Time Progress** - 3-5 minute assessment with live progress updates
+### 🔧 **Enhanced Risk Assessment Engine**
+- **Advanced Risk Scoring** - Multi-component scoring system with detailed breakdowns
+- **Automatic Risk Escalation** - Smart thresholds based on data sensitivity and user scale
+- **Mitigation Credit System** - Recognizes security certifications and controls
+- **Confidence Level Indicators** - Assessment reliability based on available data
+
+### 📚 **Comprehensive User Guidance**
+- **Interactive Decision Tree** - Step-by-step vendor classification assistance
+- **Real-Time Risk Feedback** - Dynamic guidance as you complete the form
+- **Sensitive Data Guide** - Detailed explanations of data types and risk levels
+- **Vendor Pattern Recognition** - Automatic suggestions based on use case
+
+### 📊 **Detailed Decision Explanations**
+- **Risk Score Breakdowns** - Shows how each component contributes to final score
+- **Blocking Issues Analysis** - Identifies specific security concerns
+- **Compliance Mapping** - Links requirements to risk levels and frameworks
+- **Actionable Next Steps** - Clear guidance based on decision outcome
+
+### 🎨 **Professional Interface**
+- **Interactive Help System** - Collapsible guidance panels and tooltips
+- **Enhanced Form Validation** - Smart error detection with helpful suggestions
+- **Visual Risk Indicators** - Color-coded feedback and progress tracking
+- **PDF Export** - Professional assessment reports for record keeping
 
 ## How It Works
 
@@ -38,27 +54,69 @@ A professional web-based tool for evaluating third-party vendor security posture
 - **🟡 CONDITIONALLY APPROVED** - Specific requirements to fulfill
 - **🔴 REJECTED** - Alternative solutions provided
 
-## Decision Framework
+## Enhanced Decision Framework
 
 ### Risk Classifications
-- **Critical**: Highly sensitive data or critical business functions
-- **High**: Sensitive data or important business operations
-- **Medium**: Limited data access or moderate business impact
-- **Low**: Minimal data access and low business impact
 
-### Assessment Criteria
-- Security posture and vulnerability management
-- Compliance certifications (SOC 2 Type 2, ISO 27001)
-- Public security incidents and breaches
-- Data handling and protection measures
-- Risk level appropriate controls
+#### **Critical Risk** 🔴
+- **Data Types**: SSNs, payment cards, PHI, financial accounts, biometric data
+- **Examples**: Payroll systems, banking platforms, ERP with full access
+- **Requirements**: SOC 2 Type 2 or ISO 27001, SecurityScorecard grade B+
+- **Auto-Escalation**: Sensitive data for 1000+ users
 
-## Example Assessment Flow
+#### **High Risk** 🟠  
+- **Data Types**: Customer PII, employee data, proprietary business information
+- **Examples**: CRM systems, email platforms, document storage
+- **Requirements**: Security attestation, regular reviews, grade C+
+- **Auto-Escalation**: Sensitive data for 50+ users
 
-1. **Request**: "Assess Slack for team communication (High risk, 150 users, sensitive data)"
-2. **Analysis**: Security scanning, compliance checking, public issue research
-3. **Result**: "CONDITIONALLY APPROVED - Provide SOC 2 certification within 30 days"
-4. **Next Steps**: Contact vendor for documentation, limited pilot use permitted
+#### **Medium Risk** 🟡
+- **Data Types**: Limited business data, contact information
+- **Examples**: Project management, analytics platforms, marketing tools
+- **Requirements**: Basic security documentation, periodic reviews
+- **Threshold**: 10-49 users typically
+
+#### **Low Risk** 🟢
+- **Data Types**: Public information, general business tools
+- **Examples**: Website monitoring, research tools, public APIs
+- **Requirements**: Standard security checks, basic questionnaire
+- **Threshold**: <10 users, minimal data access
+
+### Advanced Assessment Criteria
+
+- **Security Posture Analysis** - Multi-factor scoring with detailed breakdowns
+- **Compliance Verification** - Framework mapping (SOC 2, ISO 27001, NIST, HIPAA)
+- **Public Security Intelligence** - Breach history, vulnerability tracking
+- **Risk Escalation Logic** - Automatic threshold-based adjustments
+- **Mitigation Factor Recognition** - Credit for strong security controls
+
+## Enhanced Assessment Flow
+
+### Example: CRM System Assessment
+1. **Input**: "Assess Salesforce for customer management (High risk, 500 users, customer PII)"
+2. **Real-Time Guidance**: System suggests High risk appropriate, warns about user scale
+3. **Advanced Analysis**: 
+   - Base Risk Score: 30 (High classification)
+   - Data Exposure Risk: +20 (customer PII at scale)
+   - Security Posture: +2 (Grade B SecurityScorecard)
+   - Compliance Credit: -8 (SOC 2 Type 2 verified)
+   - **Total Risk Score: 44/100**
+4. **Detailed Result**: "APPROVED with monitoring - Strong security posture confirmed"
+5. **Comprehensive Explanation**:
+   - ✅ SOC 2 Type 2 certification verified
+   - ✅ SecurityScorecard grade B indicates strong controls  
+   - ⚠️ Large user base requires enhanced access controls
+   - 📋 Next Steps: Include security terms in contract, implement monitoring
+
+### Example: High-Risk Rejection
+1. **Input**: "Assess StartupTool for payroll (Critical risk, 1000+ users, SSNs)"
+2. **Auto-Escalation**: System escalates to Critical due to SSN + user scale
+3. **Analysis Results**:
+   - Missing required SOC 2/ISO 27001 certification
+   - SecurityScorecard grade D indicates security gaps
+   - Recent data breach identified in public records
+4. **Decision**: "REJECTED - Critical security deficiencies identified"
+5. **Alternatives Provided**: ADP, Workday, Gusto (pre-approved options)
 
 ## Supported Documentation
 
@@ -105,18 +163,32 @@ The tool analyzes publicly available information:
 
 Simply visit [https://joshuamtm.github.io/tprm-helper/](https://joshuamtm.github.io/tprm-helper/) and start your first vendor assessment.
 
-No registration, downloads, or setup required.
+**No registration, downloads, or setup required.**
+
+### Quick Start Guide
+1. **Click "Need Help Classifying?"** for interactive guidance on risk levels
+2. **Enter vendor details** with real-time feedback and suggestions
+3. **Upload security documents** (optional) to improve assessment accuracy
+4. **Review detailed analysis** with risk breakdowns and explanations
+5. **Download PDF report** for documentation and approval workflows
+
+### Pro Tips
+- 💡 Use the sensitive data guide to properly classify your vendor
+- 🔍 Upload SOC 2 or ISO 27001 reports for better assessment outcomes
+- ⚡ Watch for auto-escalation warnings when entering user counts
+- 📊 Review the risk score breakdown to understand decision factors
 
 ### Current Status
-✅ Web-based GUI interface  
-✅ Form-driven assessment process  
-✅ Progress indicators and professional results  
-✅ PDF export functionality  
-✅ File upload for security reports  
-✅ Public data source integration  
-✅ Session-based privacy  
+✅ **Enhanced Risk Assessment Engine** - Advanced multi-component scoring system  
+✅ **Interactive User Guidance** - Real-time help and decision tree assistance  
+✅ **Detailed Decision Explanations** - Comprehensive risk breakdowns and justifications  
+✅ **Professional Web Interface** - Form validation, visual indicators, help system  
+✅ **Enterprise-Grade Analysis** - Automatic escalation, confidence scoring  
+✅ **PDF Export & Reporting** - Professional assessment documentation  
+✅ **File Upload Support** - Security report processing for enhanced accuracy  
+✅ **Session-Based Privacy** - No data storage, client-side processing  
 
-🔧 **In Development**: Enhanced assessment algorithms and additional data sources
+🎯 **Latest Updates**: Comprehensive enhancement of risk scoring algorithms, user guidance system, and decision explanations for enterprise-grade TPRM capabilities
 
 ## Support
 
@@ -130,4 +202,4 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ---
 
-**Professional third-party risk management made simple.**
+**Enterprise-grade third-party risk management with intelligent guidance and detailed analysis.**
