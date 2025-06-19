@@ -101,7 +101,7 @@ async function performAssessment(vendor: VendorInput): Promise<VendorAssessment>
   return assessment;
 }
 
-async function saveResults(assessment: VendorAssessment, template: string): Promise<void> {
+async function saveResults(assessment: VendorAssessment, businessResponse: string): Promise<void> {
   const saveChoice = await inquirer.prompt([
     {
       type: 'confirm',
@@ -116,9 +116,7 @@ async function saveResults(assessment: VendorAssessment, template: string): Prom
     const filename = `${assessment.vendor.vendorName.replace(/[^a-z0-9]/gi, '_')}_assessment_${timestamp}.md`;
     const filepath = path.join(process.cwd(), filename);
     
-    const fullReport = reportFormatter.formatAssessmentReport(assessment, false) + '\n\n' + template;
-    
-    fs.writeFileSync(filepath, fullReport);
+    fs.writeFileSync(filepath, businessResponse);
     console.log(chalk.green(`\n✅ Assessment saved to: ${filename}`));
   }
 }
@@ -131,21 +129,18 @@ async function runInteractiveMode() {
     // Perform assessment
     const assessment = await performAssessment(vendor);
     
-    // Generate reports
-    const report = reportFormatter.formatAssessmentReport(assessment);
-    const template = templateGenerator.generateResponse(assessment);
+    // Generate business response
+    const businessResponse = templateGenerator.generateResponse(assessment);
     
     // Display results
-    console.log(chalk.bold.underline('\n📋 Assessment Results:\n'));
-    console.log(report);
-    console.log(chalk.bold.underline('\n📧 Response Template:\n'));
-    console.log(template);
+    console.log(chalk.bold.underline('\n📋 Vendor Assessment Complete\n'));
+    console.log(businessResponse);
     
-    // Format console output
+    // Format console summary
     reportFormatter.formatConsoleOutput(assessment);
     
     // Save results
-    await saveResults(assessment, template);
+    await saveResults(assessment, businessResponse);
     
   } catch (error) {
     console.error(chalk.red(`\n❌ Error: ${error}`));
@@ -189,12 +184,9 @@ program
     };
     
     const assessment = await performAssessment(vendor);
-    const report = reportFormatter.formatAssessmentReport(assessment);
-    const template = templateGenerator.generateResponse(assessment);
+    const businessResponse = templateGenerator.generateResponse(assessment);
     
-    console.log(report);
-    console.log('\n' + template);
-    
+    console.log(businessResponse);
     reportFormatter.formatConsoleOutput(assessment);
   });
 
