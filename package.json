@@ -1,0 +1,42 @@
+{
+  "name": "tprm-helper",
+  "version": "1.0.0",
+  "description": "Third-Party Risk Management (TPRM) vendor security assessment tool",
+  "main": "dist/index.js",
+  "bin": {
+    "tprm-helper": "./dist/index.js"
+  },
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsx watch src/index.ts",
+    "start": "node dist/index.js",
+    "cli": "tsx src/index.ts",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/joshuamtm/tprm-helper.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/joshuamtm/tprm-helper/issues"
+  },
+  "homepage": "https://github.com/joshuamtm/tprm-helper#readme",
+  "devDependencies": {
+    "@types/inquirer": "^9.0.8",
+    "@types/node": "^24.0.3",
+    "tsx": "^4.20.3",
+    "typescript": "^5.8.3"
+  },
+  "dependencies": {
+    "axios": "^1.10.0",
+    "chalk": "^5.4.1",
+    "cheerio": "^1.1.0",
+    "commander": "^14.0.0",
+    "dotenv": "^16.5.0",
+    "inquirer": "^12.6.3"
+  }
+}
