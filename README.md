@@ -107,6 +107,17 @@ Simply visit [https://joshuamtm.github.io/tprm-helper/](https://joshuamtm.github
 
 No registration, downloads, or setup required.
 
+### Current Status
+✅ Web-based GUI interface  
+✅ Form-driven assessment process  
+✅ Progress indicators and professional results  
+✅ PDF export functionality  
+✅ File upload for security reports  
+✅ Public data source integration  
+✅ Session-based privacy  
+
+🔧 **In Development**: Enhanced assessment algorithms and additional data sources
+
 ## Support
 
 - 📖 [Live Application](https://joshuamtm.github.io/tprm-helper/)
