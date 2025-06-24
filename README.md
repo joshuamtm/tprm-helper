@@ -1,11 +1,22 @@
-# TPRM Helper - Vendor Security Assessment Tool
+# PHI Vendor Recommendation Chatbot
 
-[![GitHub Pages](https://img.shields.io/badge/app-live-green)](https://joshuamtm.github.io/tprm-helper/)
+[![GitHub Pages](https://img.shields.io/badge/chatbot-live-green)](https://joshuamtm.github.io/tprm-helper/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-A professional web-based tool for evaluating third-party vendor security postures with enhanced risk scoring algorithms, comprehensive user guidance, and detailed decision explanations. Provides clear **APPROVED**, **CONDITIONALLY APPROVED**, or **REJECTED** decisions based on enterprise-grade automated risk assessment.
+An intelligent client-side chatbot that provides instant vendor recommendations for healthcare organizations handling Protected Health Information (PHI). The chatbot uses advanced risk assessment algorithms to evaluate third-party vendors and provides clear **APPROVED**, **CONDITIONALLY APPROVED**, or **REJECTED** decisions based on HIPAA compliance and security requirements.
 
-🌐 **Live Application**: [https://joshuamtm.github.io/tprm-helper/](https://joshuamtm.github.io/tprm-helper/)
+🌐 **Live Chatbot**: [https://joshuamtm.github.io/tprm-helper/](https://joshuamtm.github.io/tprm-helper/)
+
+## Overview
+
+The PHI Vendor Recommendation Chatbot is a sophisticated, privacy-focused tool designed specifically for healthcare organizations that need to evaluate third-party vendors for HIPAA compliance and security. Built as a client-side application, it ensures that sensitive organizational data never leaves your browser while providing enterprise-grade vendor assessments.
+
+### Key Benefits
+- **Instant Recommendations** - Get vendor approval decisions in seconds through natural language conversation
+- **HIPAA-Focused** - Specialized assessment criteria for healthcare data and PHI handling
+- **Zero Data Exposure** - All processing happens in your browser; no data sent to servers
+- **Conversational Interface** - Chat-based UI makes complex assessments simple and intuitive
+- **Evidence-Based Decisions** - Every recommendation backed by detailed security analysis
 
 ## Features
 
