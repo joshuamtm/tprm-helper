@@ -15,7 +15,11 @@ const chatbot = (function() {
         teamSize: null,
         budget: null,
         features: [],
-        messageCount: 0
+        messageCount: 0,
+        currentStep: 'initial',
+        pendingQuestion: null,
+        collectedData: {},
+        finalRecommendations: null
     };
 
     let conversationHistory = [];
@@ -129,60 +133,129 @@ const chatbot = (function() {
         const lowerMessage = message.toLowerCase();
         conversationContext.messageCount++;
         
+        // Handle help requests
+        if (lowerMessage.includes('help') || lowerMessage.includes('not sure') || lowerMessage.includes('don\'t know')) {
+            return generateHelpResponse();
+        }
+        
+        // Handle conversation flow based on current step
+        switch (conversationContext.currentStep) {
+            case 'initial':
+                return handleInitialMessage(message);
+            case 'category_selected':
+                return handleTeamSizeQuestion(message);
+            case 'team_size_collected':
+                return handleBudgetQuestion(message);
+            case 'budget_collected':
+                return handleSpecialRequirements(message);
+            case 'requirements_collected':
+                return generateFinalRecommendations();
+            default:
+                return generateDefaultResponse();
+        }
+    }
+    
+    function handleInitialMessage(message) {
+        const lowerMessage = message.toLowerCase();
+        
         // Check for category keywords
         const categories = [
-            { key: 'projectManagement', keywords: ['project', 'task', 'manage', 'planning', 'tracking'] },
-            { key: 'dataAnalysis', keywords: ['data', 'analys', 'visual', 'statistic', 'report'] },
-            { key: 'communication', keywords: ['communicat', 'chat', 'video', 'meeting', 'collaborat'] },
-            { key: 'businessIntelligence', keywords: ['business intelligence', 'bi', 'crm', 'customer', 'sales'] },
-            { key: 'hardware', keywords: ['computer', 'laptop', 'desktop', 'hardware', 'device'] },
-            { key: 'security', keywords: ['security', 'antivirus', 'password', 'protect', 'firewall'] }
+            { key: 'projectManagement', keywords: ['project', 'task', 'manage', 'planning', 'tracking'], display: 'Project Management' },
+            { key: 'dataAnalysis', keywords: ['data', 'analys', 'visual', 'statistic', 'report'], display: 'Data Analysis' },
+            { key: 'communication', keywords: ['communicat', 'chat', 'video', 'meeting', 'collaborat'], display: 'Communication' },
+            { key: 'businessIntelligence', keywords: ['business intelligence', 'bi', 'crm', 'customer', 'sales'], display: 'Business Intelligence' },
+            { key: 'hardware', keywords: ['computer', 'laptop', 'desktop', 'hardware', 'device'], display: 'Hardware' },
+            { key: 'security', keywords: ['security', 'antivirus', 'password', 'protect', 'firewall'], display: 'Security' }
         ];
 
         for (const category of categories) {
             if (category.keywords.some(keyword => lowerMessage.includes(keyword))) {
                 conversationContext.category = category.key;
-                return generateCategoryResponse(category.key);
+                conversationContext.collectedData.category = category.display;
+                conversationContext.currentStep = 'category_selected';
+                return `Great! I'll help you find ${category.display.toLowerCase()} solutions.\n\nHow many people will be using this solution? (For example: "5 people" or "Our team of 15")`;
             }
         }
         
-        // Check for team size
-        const teamSizeMatch = message.match(/(\d+)\s*(people|users|members|team|person|employee)/i);
-        if (teamSizeMatch) {
-            conversationContext.teamSize = parseInt(teamSizeMatch[1]);
-        }
-        
-        // Check for budget
-        const budgetMatch = message.match(/\$?(\d+k?|\d+,?\d+)/i);
-        if (budgetMatch && (lowerMessage.includes('budget') || lowerMessage.includes('cost'))) {
-            conversationContext.budget = budgetMatch[0];
-        }
-        
-        // If we have context, provide recommendations
-        if (conversationContext.category) {
-            return generateRecommendations();
-        }
-        
-        // Default response
+        // If no category detected, ask for clarification
         return generateDefaultResponse();
     }
-
-    function generateCategoryResponse(category) {
-        const questions = responses.clarifyingQuestions[category] || responses.clarifyingQuestions.general;
-        return questions.join('\n');
+    
+    function handleTeamSizeQuestion(message) {
+        const teamSizeMatch = message.match(/(\d+)\s*(people|users|members|team|person|employee)?/i);
+        if (teamSizeMatch) {
+            const teamSize = parseInt(teamSizeMatch[1]);
+            conversationContext.teamSize = teamSize;
+            conversationContext.collectedData.teamSize = teamSize;
+            conversationContext.currentStep = 'team_size_collected';
+            return `Perfect! So this is for ${teamSize} ${teamSize === 1 ? 'person' : 'people'}.\n\nWhat's your approximate monthly budget for this solution? (For example: "$500 per month" or "Under $1000" or "Budget is flexible")`;
+        }
+        
+        return "I didn't catch the team size. Could you tell me how many people will use this? For example, you could say \"5 people\" or \"15 team members\".\n\nType \"help\" if you need assistance with your answer.";
+    }
+    
+    function handleBudgetQuestion(message) {
+        const lowerMessage = message.toLowerCase();
+        
+        // Extract budget information
+        let budget = 'Not specified';
+        if (lowerMessage.includes('flexible') || lowerMessage.includes('no limit')) {
+            budget = 'Flexible';
+        } else if (lowerMessage.includes('free') || lowerMessage.includes('$0')) {
+            budget = 'Free solutions only';
+        } else {
+            const budgetMatch = message.match(/\$?(\d+k?|\d+,?\d+)/i);
+            if (budgetMatch) {
+                budget = `$${budgetMatch[1]} per month`;
+            } else if (lowerMessage.includes('under') || lowerMessage.includes('below')) {
+                const underMatch = message.match(/under|below.*?(\d+)/i);
+                if (underMatch) {
+                    budget = `Under $${underMatch[1]}`;
+                }
+            }
+        }
+        
+        conversationContext.budget = budget;
+        conversationContext.collectedData.budget = budget;
+        conversationContext.currentStep = 'budget_collected';
+        
+        return `Thanks! Budget noted as: ${budget}\n\nDo you have any specific requirements? For example:\n• Must integrate with existing tools\n• Needs mobile access\n• Security/compliance requirements\n• Specific features you need\n\nOr just say \"no special requirements\" if you're good to proceed.`;
+    }
+    
+    function handleSpecialRequirements(message) {
+        const lowerMessage = message.toLowerCase();
+        
+        if (lowerMessage.includes('no') && (lowerMessage.includes('special') || lowerMessage.includes('requirement'))) {
+            conversationContext.collectedData.requirements = 'No special requirements';
+        } else {
+            conversationContext.collectedData.requirements = message;
+        }
+        
+        conversationContext.currentStep = 'requirements_collected';
+        return generateFinalRecommendations();
+    }
+    
+    function generateHelpResponse() {
+        switch (conversationContext.currentStep) {
+            case 'initial':
+                return `I'm here to help you find the right technology solutions for your PHI program!\n\nJust tell me what you're looking for. You can say things like:\n• \"Project management tools\"\n• \"Communication software\"\n• \"Data analysis\"\n• \"Security solutions\"\n\nWhat type of solution do you need?`;
+            case 'category_selected':
+                return `I need to know how many people will use this solution to give you the best recommendations.\n\nYou can answer like:\n• \"5 people\"\n• \"Team of 15\"\n• \"Just me\" (for 1 person)\n• \"About 30 users\"\n\nHow many people will be using this?`;
+            case 'team_size_collected':
+                return `I need to understand your budget to recommend appropriate solutions.\n\nYou can answer like:\n• \"$500 per month\"\n• \"Under $1000\"\n• \"Budget is flexible\"\n• \"Looking for free options\"\n• \"Not sure about budget\"\n\nWhat's your budget range?`;
+            case 'budget_collected':
+                return `I'm asking about any special needs for your solution.\n\nYou can mention things like:\n• \"Must work with Salesforce\"\n• \"Need mobile app\"\n• \"HIPAA compliance required\"\n• \"No special requirements\"\n\nAny specific requirements?`;
+            default:
+                return `I'm here to help! What would you like assistance with?`;
+        }
     }
 
-    function generateRecommendations() {
+    function generateFinalRecommendations() {
         const vendors = knowledgeBase[conversationContext.category] || [];
         
         if (vendors.length === 0) {
             return "I couldn't find specific recommendations for that category. Could you tell me more about what you're looking for?";
         }
-        
-        const container = document.createElement('div');
-        const intro = document.createElement('div');
-        intro.textContent = 'Based on your needs, here are my top recommendations:';
-        container.appendChild(intro);
         
         // Filter and sort vendors based on context
         let recommendedVendors = [...vendors];
@@ -190,14 +263,12 @@ const chatbot = (function() {
         // Filter by team size if applicable
         if (conversationContext.teamSize) {
             if (conversationContext.teamSize < 10) {
-                // Prioritize tools good for small teams
                 recommendedVendors.sort((a, b) => {
                     const aSmall = a.bestFor.toLowerCase().includes('small');
                     const bSmall = b.bestFor.toLowerCase().includes('small');
                     return bSmall - aSmall;
                 });
             } else if (conversationContext.teamSize > 50) {
-                // Prioritize enterprise tools
                 recommendedVendors.sort((a, b) => {
                     const aEnterprise = a.bestFor.toLowerCase().includes('enterprise') || 
                                       a.bestFor.toLowerCase().includes('large');
@@ -211,18 +282,47 @@ const chatbot = (function() {
         // Take top 3-4 recommendations
         recommendedVendors = recommendedVendors.slice(0, Math.min(4, recommendedVendors.length));
         
+        // Store final recommendations for PDF generation
+        conversationContext.finalRecommendations = recommendedVendors;
+        
+        const container = document.createElement('div');
+        const intro = document.createElement('div');
+        intro.innerHTML = `<strong>Perfect! Based on your requirements, here are my top recommendations:</strong><br><br>`;
+        container.appendChild(intro);
+        
         recommendedVendors.forEach(vendor => {
             container.appendChild(createVendorCard(vendor));
         });
         
-        // Add follow-up question
+        // Add PDF download option
+        const downloadSection = document.createElement('div');
+        downloadSection.style.marginTop = '20px';
+        downloadSection.style.padding = '15px';
+        downloadSection.style.border = '2px solid #e0e0e0';
+        downloadSection.style.borderRadius = '8px';
+        downloadSection.style.backgroundColor = '#f9f9f9';
+        
+        const downloadText = document.createElement('p');
+        downloadText.innerHTML = '<strong>📄 Want to save these recommendations?</strong>';
+        downloadText.style.marginBottom = '10px';
+        
+        const downloadButton = document.createElement('button');
+        downloadButton.textContent = 'Download PDF Report';
+        downloadButton.className = 'download-btn';
+        downloadButton.onclick = generatePDFReport;
+        
+        downloadSection.appendChild(downloadText);
+        downloadSection.appendChild(downloadButton);
+        container.appendChild(downloadSection);
+        
         const followUp = document.createElement('div');
         followUp.style.marginTop = '16px';
-        followUp.textContent = 'Would you like more details about any of these options, or shall I show you more alternatives?';
+        followUp.textContent = 'Would you like more details about any of these options, or would you like to start a new search?';
         container.appendChild(followUp);
         
         return container;
     }
+
 
     function createVendorCard(vendor) {
         const card = document.createElement('div');
@@ -287,16 +387,160 @@ const chatbot = (function() {
     }
 
     function generateDefaultResponse() {
-        return `I can help you find solutions in several categories:
+        return `I can help you find the right technology solutions for your PHI program!\n\nI specialize in:\n• **Project Management** - Task tracking and team collaboration\n• **Data Analysis** - Analytics and visualization tools\n• **Communication** - Team chat and video platforms\n• **Business Intelligence** - CRM and reporting solutions\n• **Hardware** - Computers and devices\n• **Security** - Protection and compliance tools\n\nWhat type of solution are you looking for? Just tell me in your own words!`;
+    }
+    
+    function generatePDFReport() {
+        if (!conversationContext.finalRecommendations) {
+            alert('No recommendations available to download.');
+            return;
+        }
         
-• **Project Management** - Tools for managing tasks and team collaboration
-• **Data Analysis** - Software for analyzing and visualizing data  
-• **Communication** - Platforms for team chat and video conferencing
-• **Business Intelligence** - CRM and analytics solutions
-• **Hardware** - Computers and devices for your team
-• **Security** - Protection for your data and systems
-
-What type of solution are you looking for?`;
+        const { jsPDF } = window.jspdf;
+        const doc = new jsPDF();
+        
+        // PDF styling
+        const margin = 20;
+        let yPos = margin;
+        
+        // Title
+        doc.setFontSize(20);
+        doc.setFont(undefined, 'bold');
+        doc.text('PHI Vendor Recommendations Report', margin, yPos);
+        yPos += 15;
+        
+        // Date
+        doc.setFontSize(10);
+        doc.setFont(undefined, 'normal');
+        doc.text(`Generated: ${new Date().toLocaleDateString()}`, margin, yPos);
+        yPos += 20;
+        
+        // Requirements Summary
+        doc.setFontSize(14);
+        doc.setFont(undefined, 'bold');
+        doc.text('Your Requirements:', margin, yPos);
+        yPos += 10;
+        
+        doc.setFontSize(10);
+        doc.setFont(undefined, 'normal');
+        doc.text(`Category: ${conversationContext.collectedData.category || 'Not specified'}`, margin, yPos);
+        yPos += 6;
+        doc.text(`Team Size: ${conversationContext.collectedData.teamSize || 'Not specified'}`, margin, yPos);
+        yPos += 6;
+        doc.text(`Budget: ${conversationContext.collectedData.budget || 'Not specified'}`, margin, yPos);
+        yPos += 6;
+        doc.text(`Special Requirements: ${conversationContext.collectedData.requirements || 'None'}`, margin, yPos);
+        yPos += 20;
+        
+        // Recommendations
+        doc.setFontSize(14);
+        doc.setFont(undefined, 'bold');
+        doc.text('Recommended Solutions:', margin, yPos);
+        yPos += 15;
+        
+        conversationContext.finalRecommendations.forEach((vendor, index) => {
+            // Check if we need a new page
+            if (yPos > 250) {
+                doc.addPage();
+                yPos = margin;
+            }
+            
+            // Vendor name and status
+            doc.setFontSize(12);
+            doc.setFont(undefined, 'bold');
+            doc.text(`${index + 1}. ${vendor.name}`, margin, yPos);
+            
+            // Status badge
+            const statusText = vendor.status === 'supported' ? 'Supported' : 
+                             vendor.status === 'approved' ? 'Approved' : 'Not Approved';
+            doc.setFontSize(8);
+            doc.setFont(undefined, 'normal');
+            doc.text(`[${statusText}]`, margin + 100, yPos);
+            yPos += 8;
+            
+            // Description
+            doc.setFontSize(10);
+            doc.setFont(undefined, 'normal');
+            const descLines = doc.splitTextToSize(vendor.description, 160);
+            doc.text(descLines, margin, yPos);
+            yPos += descLines.length * 5 + 3;
+            
+            // Best for
+            doc.setFont(undefined, 'bold');
+            doc.text('Best for: ', margin, yPos);
+            doc.setFont(undefined, 'normal');
+            doc.text(vendor.bestFor, margin + 20, yPos);
+            yPos += 6;
+            
+            // Pricing
+            doc.setFont(undefined, 'bold');
+            doc.text('Nonprofit pricing: ', margin, yPos);
+            doc.setFont(undefined, 'normal');
+            doc.text(vendor.nonprofitPricing, margin + 35, yPos);
+            yPos += 6;
+            
+            // Features
+            doc.setFont(undefined, 'bold');
+            doc.text('Key features: ', margin, yPos);
+            doc.setFont(undefined, 'normal');
+            doc.text(vendor.features.join(', '), margin + 30, yPos);
+            yPos += 10;
+            
+            // Separator line
+            doc.setDrawColor(200, 200, 200);
+            doc.line(margin, yPos, 190, yPos);
+            yPos += 10;
+        });
+        
+        // Footer
+        const pageCount = doc.internal.getNumberOfPages();
+        for (let i = 1; i <= pageCount; i++) {
+            doc.setPage(i);
+            doc.setFontSize(8);
+            doc.setFont(undefined, 'normal');
+            doc.text(`PHI Vendor Recommendation Assistant - Page ${i} of ${pageCount}`, margin, 285);
+        }
+        
+        // Download the PDF
+        const filename = `PHI-Vendor-Recommendations-${new Date().toISOString().split('T')[0]}.pdf`;
+        doc.save(filename);
+    }
+    
+    function showIntroduction() {
+        const introMessage = `🏥 **Welcome to the PHI Vendor Recommendation Assistant!**\n\nI'm here to help you find the right technology solutions for your PHI program. Here's how this works:\n\n**What I do:**\n• Ask you a few simple questions about your needs\n• Provide personalized vendor recommendations\n• Give you a downloadable report with all the details\n\n**What you need to do:**\n• Answer my questions one at a time\n• Be as specific or general as you like\n• Ask for \"help\" if you're unsure about any question\n\n**Ready to get started?**\nJust tell me what type of solution you're looking for, or click one of the quick options below!`;
+        
+        addMessage(introMessage, 'bot');
+        
+        // Add quick action buttons
+        setTimeout(() => {
+            const quickActions = document.createElement('div');
+            quickActions.className = 'quick-actions';
+            quickActions.setAttribute('role', 'group');
+            quickActions.setAttribute('aria-label', 'Quick action suggestions');
+            
+            const actions = [
+                'Project Management Tools',
+                'Data Analysis Software', 
+                'Communication Platforms',
+                'Business Intelligence'
+            ];
+            
+            actions.forEach(action => {
+                const button = document.createElement('button');
+                button.className = 'quick-action';
+                button.textContent = action;
+                button.onclick = () => chatbot.sendQuickAction(action);
+                button.setAttribute('aria-label', `Search for ${action}`);
+                quickActions.appendChild(button);
+            });
+            
+            const messages = document.getElementById('messages');
+            const lastMessage = messages.lastElementChild;
+            if (lastMessage && lastMessage.classList.contains('bot-message')) {
+                const contentWrapper = lastMessage.querySelector('.message-content').parentElement;
+                contentWrapper.appendChild(quickActions);
+            }
+        }, 500);
     }
 
     function addMessage(content, sender) {
@@ -374,6 +618,12 @@ What type of solution are you looking for?`;
     // Initialize
     function init() {
         loadConversationHistory();
+        
+        // Show introduction if no conversation history
+        if (conversationHistory.length === 0) {
+            showIntroduction();
+        }
+        
         document.getElementById('userInput').focus();
         
         // Keyboard navigation

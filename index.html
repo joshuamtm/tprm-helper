@@ -16,20 +16,7 @@
 
         <div class="chat-container" role="main">
             <div class="messages" id="messages" role="log" aria-label="Chat messages" aria-live="polite">
-                <div class="message bot-message">
-                    <div class="bot-avatar" role="img" aria-label="Assistant"></div>
-                    <div>
-                        <div class="message-content">
-                            Hello! I'm here to help you find the right vendors, software, and hardware solutions for your PHI program. What are you looking for today?
-                        </div>
-                        <div class="quick-actions" role="group" aria-label="Quick action suggestions">
-                            <button class="quick-action" onclick="chatbot.sendQuickAction('Project Management Tools')" aria-label="Search for Project Management Tools">Project Management Tools</button>
-                            <button class="quick-action" onclick="chatbot.sendQuickAction('Data Analysis Software')" aria-label="Search for Data Analysis Software">Data Analysis Software</button>
-                            <button class="quick-action" onclick="chatbot.sendQuickAction('Communication Platforms')" aria-label="Search for Communication Platforms">Communication Platforms</button>
-                            <button class="quick-action" onclick="chatbot.sendQuickAction('Business Intelligence')" aria-label="Search for Business Intelligence">Business Intelligence</button>
-                        </div>
-                    </div>
-                </div>
+                <!-- Introduction message will be added by JavaScript -->
             </div>
 
             <div class="typing-indicator" id="typingIndicator" aria-hidden="true">
@@ -58,6 +45,7 @@
         </div>
     </div>
 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script src="vendors.js"></script>
     <script src="chatbot.js"></script>
 </body>
