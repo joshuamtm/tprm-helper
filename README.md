@@ -4,27 +4,29 @@ A smart, client-side chatbot designed to help healthcare organizations find the 
 
 ## 🌟 Features
 
-- **Intelligent Vendor Matching**: AI-powered recommendations based on your specific requirements
+- **Guided Conversation Flow**: Step-by-step questions for personalized recommendations
 - **6 Solution Categories**: Project Management, Data Analysis, Communication, Business Intelligence, Hardware, and Security
+- **PDF Report Generation**: Download professional vendor recommendations
+- **Contextual Help System**: Get assistance at any step in the conversation
 - **Privacy-First Design**: All processing happens in your browser - no data sent to servers
 - **Mobile Responsive**: Works seamlessly on all devices
 - **Accessibility Compliant**: Screen reader friendly with ARIA labels
 - **Session Persistence**: Conversation history saved locally
-- **Real-time Filtering**: Smart recommendations based on team size and budget
+- **Smart Filtering**: Recommendations based on team size, budget, and requirements
 
 ## 🚀 Quick Start
 
 ### Option 1: GitHub Pages (Recommended)
-1. Visit the live demo: [PHI Vendor Assistant](https://your-username.github.io/phi-request-helper/)
+1. Visit the live demo: [PHI Vendor Assistant](https://joshuamtm.github.io/phi-helper/)
 2. Start chatting immediately - no setup required!
 
 ### Option 2: Local Development
 ```bash
 # Clone the repository
-git clone https://github.com/your-username/phi-request-helper.git
+git clone https://github.com/joshuamtm/phi-helper.git
 
 # Navigate to the project
-cd phi-request-helper
+cd phi-helper
 
 # Open in your browser
 open index.html
@@ -32,16 +34,26 @@ open index.html
 
 ## 💬 How to Use
 
-1. **Start a Conversation**: Type your question or click a quick action button
-2. **Get Recommendations**: The assistant will ask clarifying questions and provide tailored vendor suggestions
-3. **Explore Options**: Each recommendation includes pricing, features, and integration details
-4. **Refine Results**: Ask follow-up questions to narrow down your options
+### New Enhanced Experience!
+1. **Welcome Introduction**: Learn how the assistant works and what to expect
+2. **Choose Your Category**: Tell the assistant what type of solution you need
+3. **Answer Simple Questions**: The assistant asks one question at a time:
+   - How many people will use this?
+   - What's your budget range?
+   - Any special requirements?
+4. **Get Personalized Recommendations**: Receive 3-4 tailored vendor suggestions
+5. **Download PDF Report**: Save a professional report with all details
 
-### Example Queries
-- "I need project management tools for a team of 15"
-- "What data analysis software works with Google Workspace?"
-- "Looking for secure communication platforms"
-- "Need CRM solutions under $500/month"
+### Getting Help
+- Type "help" at any step for guidance
+- Use quick action buttons for common requests
+- Ask questions in your own words - no special format needed
+
+### Example Interactions
+- **You**: "Project management tools"
+- **Assistant**: "Great! I'll help you find project management solutions. How many people will be using this solution?"
+- **You**: "15 people"
+- **Assistant**: "Perfect! So this is for 15 people. What's your approximate monthly budget?"
 
 ## 🏗️ Architecture
 
@@ -52,10 +64,10 @@ open index.html
 
 ### File Structure
 ```
-phi-request-helper/
+phi-helper/
 ├── index.html          # Main chatbot interface
 ├── style.css           # Responsive styling
-├── chatbot.js          # Core chatbot logic
+├── chatbot.js          # Enhanced conversation logic with PDF generation
 ├── vendors.js          # Vendor knowledge base
 ├── docs/               # Documentation
 └── README.md           # This file
@@ -79,7 +91,14 @@ Edit `vendors.js` and add to the appropriate category:
 ```
 
 ### Modifying Categories
-Update the `categories` array in `chatbot.js` to add new solution types.
+Update the `categories` array in the `handleInitialMessage` function in `chatbot.js` to add new solution types.
+
+### Customizing Conversation Flow
+Modify the conversation steps in `chatbot.js`:
+- `handleTeamSizeQuestion()` - Team size collection
+- `handleBudgetQuestion()` - Budget information
+- `handleSpecialRequirements()` - Additional requirements
+- `generateHelpResponse()` - Context-sensitive help
 
 ## 📱 Browser Support
 
@@ -95,6 +114,8 @@ Update the `categories` array in `chatbot.js` to add new solution types.
 - **XSS Protection**: All user inputs are sanitized
 - **Session Storage**: Data cleared when browser closes
 - **HTTPS Ready**: Secure deployment on GitHub Pages
+- **PDF Generation**: Happens locally in browser - no server upload
+- **No External APIs**: All processing done client-side
 
 ## 🚀 Deployment
 
@@ -103,7 +124,7 @@ Update the `categories` array in `chatbot.js` to add new solution types.
 2. Go to Settings → Pages
 3. Select "Deploy from a branch"
 4. Choose "main" branch and "/" root
-5. Your chatbot will be live at `https://username.github.io/phi-request-helper/`
+5. Your chatbot will be live at `https://username.github.io/phi-helper/`
 
 ### Custom Domain
 Add a `CNAME` file with your domain name for custom hosting.
@@ -126,13 +147,13 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 ## 🆘 Support
 
 - 📚 [Documentation](docs/)
-- 🐛 [Report Issues](https://github.com/your-username/phi-request-helper/issues)
-- 💡 [Feature Requests](https://github.com/your-username/phi-request-helper/issues)
+- 🐛 [Report Issues](https://github.com/joshuamtm/phi-helper/issues)
+- 💡 [Feature Requests](https://github.com/joshuamtm/phi-helper/issues)
 
 ## 📊 Status
 
 ![Build Status](https://img.shields.io/badge/build-passing-brightgreen)
-![Version](https://img.shields.io/badge/version-1.0.0-blue)
+![Version](https://img.shields.io/badge/version-2.0.0-blue)
 ![License](https://img.shields.io/badge/license-MIT-green)
 
 ---
