@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BronxWorks Program Closure - Simple Version</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: linear-gradient(135deg, #f0f9ff 0%, #ffffff 50%, #e0f2fe 100%);
+            min-height: 100vh;
+            padding: 2rem;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 1.5rem;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+        .header {
+            background: linear-gradient(135deg, #0ea5e9, #3b82f6);
+            color: white;
+            padding: 3rem 2rem;
+            text-align: center;
+        }
+        .logo {
+            width: 80px;
+            height: 80px;
+            background: rgba(255,255,255,0.2);
+            border-radius: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1rem;
+            font-size: 2rem;
+            font-weight: bold;
+        }
+        h1 { font-size: 2.5rem; margin-bottom: 1rem; }
+        .subtitle { font-size: 1.2rem; opacity: 0.9; }
+        .content { padding: 3rem 2rem; }
+        .step { 
+            background: #f8fafc; 
+            border: 1px solid #e2e8f0; 
+            border-radius: 0.75rem; 
+            padding: 1.5rem; 
+            margin-bottom: 1.5rem; 
+            transition: all 0.3s ease;
+        }
+        .step:hover { 
+            border-color: #0ea5e9; 
+            box-shadow: 0 4px 12px rgba(14, 165, 233, 0.15); 
+        }
+        .step h3 { 
+            color: #1e293b; 
+            margin-bottom: 1rem; 
+            display: flex; 
+            align-items: center; 
+            gap: 0.5rem; 
+        }
+        .step-number {
+            background: #0ea5e9;
+            color: white;
+            width: 2rem;
+            height: 2rem;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 0.9rem;
+        }
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        label {
+            display: block;
+            font-weight: 600;
+            color: #374151;
+            margin-bottom: 0.5rem;
+        }
+        input, select, textarea {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid #d1d5db;
+            border-radius: 0.5rem;
+            font-size: 1rem;
+            transition: border-color 0.3s;
+        }
+        input:focus, select:focus, textarea:focus {
+            outline: none;
+            border-color: #0ea5e9;
+            box-shadow: 0 0 0 3px rgba(14, 165, 233, 0.1);
+        }
+        .btn {
+            background: #0ea5e9;
+            color: white;
+            padding: 0.75rem 2rem;
+            border: none;
+            border-radius: 0.5rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        .btn:hover { background: #0284c7; }
+        .btn-secondary {
+            background: #6b7280;
+        }
+        .btn-secondary:hover { background: #4b5563; }
+        .progress {
+            background: #f1f5f9;
+            border-radius: 1rem;
+            height: 0.5rem;
+            margin: 2rem 0;
+            overflow: hidden;
+        }
+        .progress-bar {
+            background: linear-gradient(90deg, #0ea5e9, #3b82f6);
+            height: 100%;
+            transition: width 0.3s ease;
+        }
+        .actions {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-top: 2rem;
+            border-top: 1px solid #e5e7eb;
+        }
+        .hidden { display: none; }
+        .success {
+            background: #f0fdf4;
+            border: 1px solid #bbf7d0;
+            color: #166534;
+            padding: 1rem;
+            border-radius: 0.5rem;
+            margin-bottom: 1rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="logo">BX</div>
+            <h1>BronxWorks Program Closure Coordination</h1>
+            <p class="subtitle">Efficiently coordinate program closures across multiple departments</p>
+        </div>
+        
+        <div class="content">
+            <div class="progress">
+                <div class="progress-bar" id="progressBar" style="width: 10%"></div>
+            </div>
+            
+            <!-- Step 1: Program Information -->
+            <div class="step" id="step1">
+                <h3><span class="step-number">1</span> Program Information</h3>
+                <div class="form-group">
+                    <label for="programName">Program Name *</label>
+                    <input type="text" id="programName" required placeholder="e.g., Youth Development Center">
+                </div>
+                <div class="form-group">
+                    <label for="programType">Program Type *</label>
+                    <select id="programType" required>
+                        <option value="">Select program type...</option>
+                        <option value="youth-services">Youth Services</option>
+                        <option value="adult-education">Adult Education</option>
+                        <option value="workforce-development">Workforce Development</option>
+                        <option value="social-services">Social Services</option>
+                        <option value="community-programs">Community Programs</option>
+                        <option value="health-wellness">Health & Wellness</option>
+                        <option value="senior-services">Senior Services</option>
+                        <option value="housing-assistance">Housing Assistance</option>
+                        <option value="food-nutrition">Food & Nutrition</option>
+                        <option value="other">Other</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="lastServiceDate">Last Service Date *</label>
+                    <input type="date" id="lastServiceDate" required>
+                </div>
+                <div class="form-group">
+                    <label for="closureDate">Program Closure Date *</label>
+                    <input type="date" id="closureDate" required>
+                </div>
+                <div class="form-group">
+                    <label for="staffCount">Staff Count *</label>
+                    <input type="number" id="staffCount" required placeholder="0" min="0">
+                </div>
+            </div>
+
+            <!-- Step 2: Contact Information -->
+            <div class="step hidden" id="step2">
+                <h3><span class="step-number">2</span> Primary Contact Information</h3>
+                <div class="form-group">
+                    <label for="contactName">Full Name *</label>
+                    <input type="text" id="contactName" required placeholder="e.g., Jane Smith">
+                </div>
+                <div class="form-group">
+                    <label for="contactTitle">Job Title *</label>
+                    <input type="text" id="contactTitle" required placeholder="e.g., Program Director">
+                </div>
+                <div class="form-group">
+                    <label for="contactEmail">Email Address *</label>
+                    <input type="email" id="contactEmail" required placeholder="e.g., jane.smith@bronxworks.org">
+                </div>
+                <div class="form-group">
+                    <label for="contactPhone">Phone Number *</label>
+                    <input type="tel" id="contactPhone" required placeholder="e.g., (718) 555-0123">
+                </div>
+            </div>
+
+            <!-- Step 3: Location -->
+            <div class="step hidden" id="step3">
+                <h3><span class="step-number">3</span> Location Information</h3>
+                <div class="form-group">
+                    <label for="building">Building Name *</label>
+                    <input type="text" id="building" required placeholder="e.g., Main Building">
+                </div>
+                <div class="form-group">
+                    <label for="floor">Floor</label>
+                    <input type="text" id="floor" placeholder="e.g., 2nd Floor">
+                </div>
+                <div class="form-group">
+                    <label for="rooms">Room Numbers *</label>
+                    <input type="text" id="rooms" required placeholder="e.g., 201, 202A, Conference Room">
+                </div>
+                <div class="form-group">
+                    <label for="address">Full Address *</label>
+                    <textarea id="address" required placeholder="Complete street address including zip code"></textarea>
+                </div>
+            </div>
+
+            <!-- Final Step: Review -->
+            <div class="step hidden" id="stepFinal">
+                <h3><span class="step-number">✓</span> Review & Submit</h3>
+                <div class="success">
+                    ✅ <strong>Form Complete!</strong> All required information has been collected.
+                </div>
+                <div id="reviewSummary"></div>
+                <p>This simplified version demonstrates the core functionality. The full application includes:</p>
+                <ul style="margin: 1rem 0;">
+                    <li>10 comprehensive steps with detailed validation</li>
+                    <li>IT equipment and furniture inventory</li>
+                    <li>Digital asset and user account management</li>
+                    <li>Multi-stakeholder report generation</li>
+                    <li>Auto-save and progress tracking</li>
+                </ul>
+            </div>
+
+            <div class="actions">
+                <button class="btn btn-secondary" id="prevBtn" onclick="previousStep()" style="display: none;">Previous</button>
+                <div>
+                    <span id="stepIndicator">Step 1 of 4</span>
+                </div>
+                <button class="btn" id="nextBtn" onclick="nextStep()">Next Step</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentStep = 1;
+        const totalSteps = 4;
+
+        function updateProgress() {
+            const progress = (currentStep / totalSteps) * 100;
+            document.getElementById('progressBar').style.width = progress + '%';
+            document.getElementById('stepIndicator').textContent = currentStep === totalSteps ? 'Review' : `Step ${currentStep} of ${totalSteps - 1}`;
+        }
+
+        function showStep(step) {
+            // Hide all steps
+            for (let i = 1; i <= 3; i++) {
+                document.getElementById(`step${i}`).classList.add('hidden');
+            }
+            document.getElementById('stepFinal').classList.add('hidden');
+
+            // Show current step
+            if (step <= 3) {
+                document.getElementById(`step${step}`).classList.remove('hidden');
+            } else {
+                document.getElementById('stepFinal').classList.remove('hidden');
+                generateReview();
+            }
+
+            // Update navigation
+            document.getElementById('prevBtn').style.display = step > 1 ? 'block' : 'none';
+            document.getElementById('nextBtn').textContent = step === totalSteps ? 'Generate Report' : 'Next Step';
+        }
+
+        function validateStep(step) {
+            const requiredFields = {
+                1: ['programName', 'programType', 'lastServiceDate', 'closureDate', 'staffCount'],
+                2: ['contactName', 'contactTitle', 'contactEmail', 'contactPhone'],
+                3: ['building', 'rooms', 'address']
+            };
+
+            if (!requiredFields[step]) return true;
+
+            for (let field of requiredFields[step]) {
+                const element = document.getElementById(field);
+                if (!element.value.trim()) {
+                    alert(`Please fill in the ${element.previousElementSibling.textContent.replace(' *', '')}`);
+                    element.focus();
+                    return false;
+                }
+            }
+            return true;
+        }
+
+        function nextStep() {
+            if (currentStep === totalSteps) {
+                alert('🎉 In the full application, this would generate comprehensive reports for IT Operations, Administrative teams, and create a complete audit trail!');
+                return;
+            }
+
+            if (validateStep(currentStep)) {
+                currentStep++;
+                showStep(currentStep);
+                updateProgress();
+            }
+        }
+
+        function previousStep() {
+            if (currentStep > 1) {
+                currentStep--;
+                showStep(currentStep);
+                updateProgress();
+            }
+        }
+
+        function generateReview() {
+            const summary = document.getElementById('reviewSummary');
+            const programName = document.getElementById('programName').value;
+            const programType = document.getElementById('programType').value;
+            const contactName = document.getElementById('contactName').value;
+            const building = document.getElementById('building').value;
+            
+            summary.innerHTML = `
+                <div style="background: #f8fafc; padding: 1rem; border-radius: 0.5rem; margin: 1rem 0;">
+                    <h4 style="margin-bottom: 0.5rem;">Program Summary:</h4>
+                    <p><strong>Program:</strong> ${programName} (${programType})</p>
+                    <p><strong>Contact:</strong> ${contactName}</p>
+                    <p><strong>Location:</strong> ${building}</p>
+                    <p><strong>Closure Date:</strong> ${document.getElementById('closureDate').value}</p>
+                </div>
+            `;
+        }
+
+        // Initialize
+        showStep(1);
+        updateProgress();
+    </script>
+</body>
+</html>

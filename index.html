@@ -116,9 +116,10 @@
         .legacy a:hover {
             color: #374151;
         }
-        @media (max-width: 640px) {
+        @media (max-width: 768px) {
             .apps {
-                grid-template-columns: 1fr;
+                grid-template-columns: 1fr !important;
+                gap: 1rem !important;
             }
             .container {
                 margin: 1rem;
@@ -139,23 +140,32 @@
             no resources are wasted, and all stakeholders have the information they need to act.
         </p>
         
-        <div class="apps">
-            <div class="app-card" onclick="window.location.href='./bronxworks-program-closure/index.html'">
-                <div class="app-title">🚀 Production Application</div>
+        <div class="apps" style="grid-template-columns: 1fr 1fr 1fr; gap: 1.5rem;">
+            <div class="app-card" onclick="window.location.href='./bronxworks-simple/index.html'">
+                <div class="app-title">✨ Working Demo</div>
                 <div class="app-desc">
-                    Complete program closure coordination system with 10-step guided form, 
-                    multi-stakeholder reports, and comprehensive validation.
+                    Simplified working version demonstrating core program closure 
+                    coordination functionality and user experience.
                 </div>
-                <div class="status production">✅ PRODUCTION READY</div>
+                <div class="status production">🟢 LIVE & WORKING</div>
+            </div>
+            
+            <div class="app-card" onclick="window.location.href='./bronxworks-program-closure/index.html'">
+                <div class="app-title">🚀 Full Application</div>
+                <div class="app-desc">
+                    Complete system with 10-step guided form, multi-stakeholder 
+                    reports, and comprehensive validation (troubleshooting).
+                </div>
+                <div class="status demo">🔧 DEBUGGING</div>
             </div>
             
             <div class="app-card" onclick="window.location.href='./bronxworks-closeout-poc/index.html'">
-                <div class="app-title">🧪 Proof of Concept</div>
+                <div class="app-title">🧪 Original POC</div>
                 <div class="app-desc">
-                    Original demonstration application that validated the approach 
+                    Original proof-of-concept that validated the initial approach 
                     and user interface concepts.
                 </div>
-                <div class="status demo">📋 DEMO</div>
+                <div class="status demo">📋 REFERENCE</div>
             </div>
         </div>
         

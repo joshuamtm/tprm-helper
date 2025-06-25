@@ -53,6 +53,9 @@ jobs:
           cp style.css _site/
           cp chatbot.js _site/
           cp vendors.js _site/
+          # Copy simple working version
+          mkdir -p _site/bronxworks-simple
+          cp -r bronxworks-simple/* _site/bronxworks-simple/
           # Copy production app
           mkdir -p _site/bronxworks-program-closure
           cp -r bronxworks-program-closure/dist/* _site/bronxworks-program-closure/
