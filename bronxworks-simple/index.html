@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BronxWorks Program Closure - Simple Version</title>
+    <title>BronxWorks Program Closure - Enhanced Version</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
@@ -109,6 +109,10 @@
             background: #6b7280;
         }
         .btn-secondary:hover { background: #4b5563; }
+        .btn-small {
+            padding: 0.5rem 1rem;
+            font-size: 0.9rem;
+        }
         .progress {
             background: #f1f5f9;
             border-radius: 1rem;
@@ -137,6 +141,42 @@
             border-radius: 0.5rem;
             margin-bottom: 1rem;
         }
+        .item-list {
+            background: #f9fafb;
+            border: 1px solid #e5e7eb;
+            border-radius: 0.5rem;
+            padding: 1rem;
+            margin-top: 1rem;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+        .item {
+            background: white;
+            border: 1px solid #d1d5db;
+            border-radius: 0.375rem;
+            padding: 0.75rem;
+            margin-bottom: 0.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .item:last-child { margin-bottom: 0; }
+        .remove-btn {
+            background: #ef4444;
+            color: white;
+            padding: 0.25rem 0.5rem;
+            border: none;
+            border-radius: 0.25rem;
+            cursor: pointer;
+            font-size: 0.8rem;
+        }
+        .remove-btn:hover { background: #dc2626; }
+        @media print {
+            body { background: white; padding: 0; }
+            .container { box-shadow: none; border-radius: 0; }
+            .header { background: #0ea5e9 !important; }
+            .actions, .progress { display: none; }
+        }
     </style>
 </head>
 <body>
@@ -144,12 +184,12 @@
         <div class="header">
             <div class="logo">BX</div>
             <h1>BronxWorks Program Closure Coordination</h1>
-            <p class="subtitle">Efficiently coordinate program closures across multiple departments</p>
+            <p class="subtitle">Comprehensive coordination system for program closures and relocations</p>
         </div>
         
         <div class="content">
             <div class="progress">
-                <div class="progress-bar" id="progressBar" style="width: 10%"></div>
+                <div class="progress-bar" id="progressBar" style="width: 14%"></div>
             </div>
             
             <!-- Step 1: Program Information -->
@@ -176,6 +216,10 @@
                     </select>
                 </div>
                 <div class="form-group">
+                    <label for="programDirector">Program Director *</label>
+                    <input type="text" id="programDirector" required placeholder="Director's full name">
+                </div>
+                <div class="form-group">
                     <label for="lastServiceDate">Last Service Date *</label>
                     <input type="date" id="lastServiceDate" required>
                 </div>
@@ -187,34 +231,32 @@
                     <label for="staffCount">Staff Count *</label>
                     <input type="number" id="staffCount" required placeholder="0" min="0">
                 </div>
+                <div class="form-group">
+                    <label for="reason">Reason for Closure *</label>
+                    <select id="reason" required>
+                        <option value="">Select reason...</option>
+                        <option value="funding-ended">Funding Ended</option>
+                        <option value="program-completion">Program Completion</option>
+                        <option value="consolidation">Program Consolidation</option>
+                        <option value="relocation">Site Relocation</option>
+                        <option value="other">Other</option>
+                    </select>
+                </div>
             </div>
 
-            <!-- Step 2: Contact Information -->
+            <!-- Step 2: Closure Type -->
             <div class="step hidden" id="step2">
-                <h3><span class="step-number">2</span> Primary Contact Information</h3>
+                <h3><span class="step-number">2</span> Closure Type & Location</h3>
                 <div class="form-group">
-                    <label for="contactName">Full Name *</label>
-                    <input type="text" id="contactName" required placeholder="e.g., Jane Smith">
+                    <label for="closureType">Type of Closure *</label>
+                    <select id="closureType" required onchange="toggleRelocationFields()">
+                        <option value="">Select closure type...</option>
+                        <option value="permanent">Permanent Site Closure</option>
+                        <option value="relocation">Program Relocation</option>
+                    </select>
                 </div>
                 <div class="form-group">
-                    <label for="contactTitle">Job Title *</label>
-                    <input type="text" id="contactTitle" required placeholder="e.g., Program Director">
-                </div>
-                <div class="form-group">
-                    <label for="contactEmail">Email Address *</label>
-                    <input type="email" id="contactEmail" required placeholder="e.g., jane.smith@bronxworks.org">
-                </div>
-                <div class="form-group">
-                    <label for="contactPhone">Phone Number *</label>
-                    <input type="tel" id="contactPhone" required placeholder="e.g., (718) 555-0123">
-                </div>
-            </div>
-
-            <!-- Step 3: Location -->
-            <div class="step hidden" id="step3">
-                <h3><span class="step-number">3</span> Location Information</h3>
-                <div class="form-group">
-                    <label for="building">Building Name *</label>
+                    <label for="building">Current Building *</label>
                     <input type="text" id="building" required placeholder="e.g., Main Building">
                 </div>
                 <div class="form-group">
@@ -226,32 +268,149 @@
                     <input type="text" id="rooms" required placeholder="e.g., 201, 202A, Conference Room">
                 </div>
                 <div class="form-group">
-                    <label for="address">Full Address *</label>
+                    <label for="address">Current Address *</label>
                     <textarea id="address" required placeholder="Complete street address including zip code"></textarea>
+                </div>
+                <div id="relocationFields" class="hidden">
+                    <div class="form-group">
+                        <label for="newLocation">New Location Address</label>
+                        <textarea id="newLocation" placeholder="New address if relocating"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="moveDate">Move Date</label>
+                        <input type="date" id="moveDate">
+                    </div>
                 </div>
             </div>
 
-            <!-- Final Step: Review -->
+            <!-- Step 3: Equipment Inventory -->
+            <div class="step hidden" id="step3">
+                <h3><span class="step-number">3</span> Equipment Inventory & Disposition</h3>
+                <div class="form-group">
+                    <label>Add Equipment Items</label>
+                    <div style="display: flex; gap: 0.5rem; margin-bottom: 1rem; flex-wrap: wrap;">
+                        <select id="equipmentType" style="flex: 1; min-width: 120px;">
+                            <option value="computer">Computer/Laptop</option>
+                            <option value="printer">Printer</option>
+                            <option value="monitor">Monitor</option>
+                            <option value="network">Network Equipment</option>
+                            <option value="phone">Phone System</option>
+                            <option value="projector">Projector</option>
+                            <option value="other-tech">Other Technology</option>
+                        </select>
+                        <input type="text" id="equipmentDesc" placeholder="Description/Model" style="flex: 2; min-width: 150px;">
+                        <select id="equipmentDisposition" style="flex: 1; min-width: 120px;">
+                            <option value="transfer">Transfer to Other Program</option>
+                            <option value="storage">Move to Storage</option>
+                            <option value="dispose">Dispose/Recycle</option>
+                            <option value="return">Return to Vendor</option>
+                        </select>
+                        <button type="button" class="btn btn-small" onclick="addEquipment()">Add</button>
+                    </div>
+                </div>
+                <div id="equipmentList" class="item-list hidden"></div>
+                <p style="color: #6b7280; font-size: 0.9rem; margin-top: 1rem;">
+                    💡 List all technology equipment that needs to be handled during closure. This helps coordinate with IT Operations for proper disposition.
+                </p>
+            </div>
+
+            <!-- Step 4: Service Contacts -->
+            <div class="step hidden" id="step4">
+                <h3><span class="step-number">4</span> Service Provider Contacts</h3>
+                <div class="form-group">
+                    <label>Add Service Contacts</label>
+                    <div style="display: grid; grid-template-columns: 1fr 2fr 2fr 1fr auto; gap: 0.5rem; margin-bottom: 1rem; align-items: end;">
+                        <select id="serviceType">
+                            <option value="moving">Moving Service</option>
+                            <option value="electrical">Electrical</option>
+                            <option value="maintenance">Maintenance</option>
+                            <option value="cleaning">Cleaning</option>
+                            <option value="security">Security</option>
+                            <option value="it-support">IT Support</option>
+                        </select>
+                        <input type="text" id="serviceName" placeholder="Company/Contact Name">
+                        <input type="text" id="servicePhone" placeholder="Phone Number">
+                        <input type="email" id="serviceEmail" placeholder="Email (optional)">
+                        <button type="button" class="btn btn-small" onclick="addServiceContact()">Add</button>
+                    </div>
+                </div>
+                <div id="serviceContactsList" class="item-list hidden"></div>
+                <p style="color: #6b7280; font-size: 0.9rem; margin-top: 1rem;">
+                    📞 Add contacts for services needed during closure (moving, electrical work, maintenance, etc.)
+                </p>
+            </div>
+
+            <!-- Step 5: Furniture & Assets -->
+            <div class="step hidden" id="step5">
+                <h3><span class="step-number">5</span> Furniture & Asset Disposition</h3>
+                <div class="form-group">
+                    <label>Add Furniture Items</label>
+                    <div style="display: flex; gap: 0.5rem; margin-bottom: 1rem; flex-wrap: wrap;">
+                        <select id="furnitureType" style="flex: 1; min-width: 120px;">
+                            <option value="desk">Desk</option>
+                            <option value="chair">Chair</option>
+                            <option value="table">Table</option>
+                            <option value="cabinet">Cabinet/Filing</option>
+                            <option value="shelf">Shelving</option>
+                            <option value="other-furniture">Other Furniture</option>
+                        </select>
+                        <input type="text" id="furnitureDesc" placeholder="Description" style="flex: 2; min-width: 150px;">
+                        <input type="number" id="furnitureQty" placeholder="Qty" style="width: 80px;" min="1" value="1">
+                        <select id="furnitureDisposition" style="flex: 1; min-width: 120px;">
+                            <option value="move">Move to New Location</option>
+                            <option value="transfer">Transfer to Other Program</option>
+                            <option value="storage">Store</option>
+                            <option value="donate">Donate</option>
+                            <option value="dispose">Dispose</option>
+                        </select>
+                        <button type="button" class="btn btn-small" onclick="addFurniture()">Add</button>
+                    </div>
+                </div>
+                <div id="furnitureList" class="item-list hidden"></div>
+                <p style="color: #6b7280; font-size: 0.9rem; margin-top: 1rem;">
+                    🪑 Document all furniture and large assets that need to be handled during closure.
+                </p>
+            </div>
+
+            <!-- Step 6: Custom Requirements -->
+            <div class="step hidden" id="step6">
+                <h3><span class="step-number">6</span> Program-Specific Requirements</h3>
+                <div class="form-group">
+                    <label for="customRequirements">Special Requirements or Notes</label>
+                    <textarea id="customRequirements" rows="6" placeholder="List any program-specific requirements, special procedures, or important notes for the closure process..."></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="stakeholders">Key Stakeholders to Notify</label>
+                    <textarea id="stakeholders" rows="4" placeholder="List people, departments, or organizations that need to be notified about this closure..."></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="timeline">Critical Timeline Items</label>
+                    <textarea id="timeline" rows="4" placeholder="Any time-sensitive items or deadlines that must be met..."></textarea>
+                </div>
+            </div>
+
+            <!-- Final Step: Review & Checklist -->
             <div class="step hidden" id="stepFinal">
-                <h3><span class="step-number">✓</span> Review & Submit</h3>
+                <h3><span class="step-number">✓</span> Review & Generate Checklist</h3>
                 <div class="success">
-                    ✅ <strong>Form Complete!</strong> All required information has been collected.
+                    ✅ <strong>Closure Plan Complete!</strong> All required information has been collected.
                 </div>
                 <div id="reviewSummary"></div>
-                <p>This simplified version demonstrates the core functionality. The full application includes:</p>
-                <ul style="margin: 1rem 0;">
-                    <li>10 comprehensive steps with detailed validation</li>
-                    <li>IT equipment and furniture inventory</li>
-                    <li>Digital asset and user account management</li>
-                    <li>Multi-stakeholder report generation</li>
-                    <li>Auto-save and progress tracking</li>
-                </ul>
+                <div style="text-align: center; margin: 2rem 0;">
+                    <button class="btn" onclick="generatePrintableChecklist()" style="font-size: 1.1rem; padding: 1rem 2rem;">
+                        📋 Generate Printable Checklist
+                    </button>
+                </div>
+                <div id="printableChecklist" class="hidden"></div>
+                <p style="color: #6b7280; font-size: 0.9rem; margin-top: 1rem;">
+                    This enhanced demo now includes the core requirements discussed with Yonnel: equipment tracking, service contacts, furniture disposition, and printable checklists.
+                </p>
             </div>
 
             <div class="actions">
                 <button class="btn btn-secondary" id="prevBtn" onclick="previousStep()" style="display: none;">Previous</button>
                 <div>
-                    <span id="stepIndicator">Step 1 of 4</span>
+                    <span id="stepIndicator">Step 1 of 6</span>
                 </div>
                 <button class="btn" id="nextBtn" onclick="nextStep()">Next Step</button>
             </div>
@@ -260,7 +419,10 @@
 
     <script>
         let currentStep = 1;
-        const totalSteps = 4;
+        const totalSteps = 7;
+        let equipmentList = [];
+        let serviceContacts = [];
+        let furnitureList = [];
 
         function updateProgress() {
             const progress = (currentStep / totalSteps) * 100;
@@ -270,13 +432,13 @@
 
         function showStep(step) {
             // Hide all steps
-            for (let i = 1; i <= 3; i++) {
+            for (let i = 1; i <= 6; i++) {
                 document.getElementById(`step${i}`).classList.add('hidden');
             }
             document.getElementById('stepFinal').classList.add('hidden');
 
             // Show current step
-            if (step <= 3) {
+            if (step <= 6) {
                 document.getElementById(`step${step}`).classList.remove('hidden');
             } else {
                 document.getElementById('stepFinal').classList.remove('hidden');
@@ -285,14 +447,17 @@
 
             // Update navigation
             document.getElementById('prevBtn').style.display = step > 1 ? 'block' : 'none';
-            document.getElementById('nextBtn').textContent = step === totalSteps ? 'Generate Report' : 'Next Step';
+            document.getElementById('nextBtn').textContent = step === totalSteps ? 'Complete & Generate Checklist' : 'Next Step';
         }
 
         function validateStep(step) {
             const requiredFields = {
-                1: ['programName', 'programType', 'lastServiceDate', 'closureDate', 'staffCount'],
-                2: ['contactName', 'contactTitle', 'contactEmail', 'contactPhone'],
-                3: ['building', 'rooms', 'address']
+                1: ['programName', 'programType', 'lastServiceDate', 'closureDate', 'staffCount', 'programDirector', 'reason'],
+                2: ['closureType', 'building', 'rooms', 'address'],
+                3: [], // Equipment is optional
+                4: [], // Service contacts are optional
+                5: [], // Furniture is optional
+                6: []  // Custom requirements are optional
             };
 
             if (!requiredFields[step]) return true;
@@ -310,7 +475,7 @@
 
         function nextStep() {
             if (currentStep === totalSteps) {
-                alert('🎉 In the full application, this would generate comprehensive reports for IT Operations, Administrative teams, and create a complete audit trail!');
+                generatePrintableChecklist();
                 return;
             }
 
@@ -329,22 +494,296 @@
             }
         }
 
+        function toggleRelocationFields() {
+            const closureType = document.getElementById('closureType').value;
+            const relocationFields = document.getElementById('relocationFields');
+            
+            if (closureType === 'relocation') {
+                relocationFields.classList.remove('hidden');
+            } else {
+                relocationFields.classList.add('hidden');
+            }
+        }
+
+        function addEquipment() {
+            const type = document.getElementById('equipmentType').value;
+            const desc = document.getElementById('equipmentDesc').value.trim();
+            const disposition = document.getElementById('equipmentDisposition').value;
+
+            if (!desc) {
+                alert('Please enter a description for the equipment');
+                return;
+            }
+
+            const equipment = {
+                id: Date.now(),
+                type: type,
+                description: desc,
+                disposition: disposition
+            };
+
+            equipmentList.push(equipment);
+            updateEquipmentList();
+            
+            // Clear inputs
+            document.getElementById('equipmentDesc').value = '';
+        }
+
+        function removeEquipment(id) {
+            equipmentList = equipmentList.filter(item => item.id !== id);
+            updateEquipmentList();
+        }
+
+        function updateEquipmentList() {
+            const container = document.getElementById('equipmentList');
+            
+            if (equipmentList.length === 0) {
+                container.classList.add('hidden');
+                return;
+            }
+
+            container.classList.remove('hidden');
+            container.innerHTML = equipmentList.map(item => `
+                <div class="item">
+                    <div>
+                        <strong>${item.type.replace('-', ' ').toUpperCase()}:</strong> ${item.description}
+                        <br><small>Disposition: ${item.disposition.replace('-', ' ')}</small>
+                    </div>
+                    <button class="remove-btn" onclick="removeEquipment(${item.id})">Remove</button>
+                </div>
+            `).join('');
+        }
+
+        function addServiceContact() {
+            const type = document.getElementById('serviceType').value;
+            const name = document.getElementById('serviceName').value.trim();
+            const phone = document.getElementById('servicePhone').value.trim();
+            const email = document.getElementById('serviceEmail').value.trim();
+
+            if (!name || !phone) {
+                alert('Please enter at least company name and phone number');
+                return;
+            }
+
+            const contact = {
+                id: Date.now(),
+                type: type,
+                name: name,
+                phone: phone,
+                email: email
+            };
+
+            serviceContacts.push(contact);
+            updateServiceContactsList();
+            
+            // Clear inputs
+            document.getElementById('serviceName').value = '';
+            document.getElementById('servicePhone').value = '';
+            document.getElementById('serviceEmail').value = '';
+        }
+
+        function removeServiceContact(id) {
+            serviceContacts = serviceContacts.filter(item => item.id !== id);
+            updateServiceContactsList();
+        }
+
+        function updateServiceContactsList() {
+            const container = document.getElementById('serviceContactsList');
+            
+            if (serviceContacts.length === 0) {
+                container.classList.add('hidden');
+                return;
+            }
+
+            container.classList.remove('hidden');
+            container.innerHTML = serviceContacts.map(item => `
+                <div class="item">
+                    <div>
+                        <strong>${item.type.replace('-', ' ').toUpperCase()}:</strong> ${item.name}
+                        <br><small>Phone: ${item.phone}${item.email ? ` | Email: ${item.email}` : ''}</small>
+                    </div>
+                    <button class="remove-btn" onclick="removeServiceContact(${item.id})">Remove</button>
+                </div>
+            `).join('');
+        }
+
+        function addFurniture() {
+            const type = document.getElementById('furnitureType').value;
+            const desc = document.getElementById('furnitureDesc').value.trim();
+            const qty = document.getElementById('furnitureQty').value || 1;
+            const disposition = document.getElementById('furnitureDisposition').value;
+
+            if (!desc) {
+                alert('Please enter a description for the furniture');
+                return;
+            }
+
+            const furniture = {
+                id: Date.now(),
+                type: type,
+                description: desc,
+                quantity: parseInt(qty),
+                disposition: disposition
+            };
+
+            furnitureList.push(furniture);
+            updateFurnitureList();
+            
+            // Clear inputs
+            document.getElementById('furnitureDesc').value = '';
+            document.getElementById('furnitureQty').value = '1';
+        }
+
+        function removeFurniture(id) {
+            furnitureList = furnitureList.filter(item => item.id !== id);
+            updateFurnitureList();
+        }
+
+        function updateFurnitureList() {
+            const container = document.getElementById('furnitureList');
+            
+            if (furnitureList.length === 0) {
+                container.classList.add('hidden');
+                return;
+            }
+
+            container.classList.remove('hidden');
+            container.innerHTML = furnitureList.map(item => `
+                <div class="item">
+                    <div>
+                        <strong>${item.type.toUpperCase()}:</strong> ${item.description} (Qty: ${item.quantity})
+                        <br><small>Disposition: ${item.disposition.replace('-', ' ')}</small>
+                    </div>
+                    <button class="remove-btn" onclick="removeFurniture(${item.id})">Remove</button>
+                </div>
+            `).join('');
+        }
+
         function generateReview() {
             const summary = document.getElementById('reviewSummary');
             const programName = document.getElementById('programName').value;
             const programType = document.getElementById('programType').value;
-            const contactName = document.getElementById('contactName').value;
             const building = document.getElementById('building').value;
+            const closureType = document.getElementById('closureType').value;
             
             summary.innerHTML = `
                 <div style="background: #f8fafc; padding: 1rem; border-radius: 0.5rem; margin: 1rem 0;">
                     <h4 style="margin-bottom: 0.5rem;">Program Summary:</h4>
                     <p><strong>Program:</strong> ${programName} (${programType})</p>
-                    <p><strong>Contact:</strong> ${contactName}</p>
+                    <p><strong>Director:</strong> ${document.getElementById('programDirector').value}</p>
                     <p><strong>Location:</strong> ${building}</p>
+                    <p><strong>Closure Type:</strong> ${closureType}</p>
                     <p><strong>Closure Date:</strong> ${document.getElementById('closureDate').value}</p>
+                    <p><strong>Equipment Items:</strong> ${equipmentList.length}</p>
+                    <p><strong>Service Contacts:</strong> ${serviceContacts.length}</p>
+                    <p><strong>Furniture Items:</strong> ${furnitureList.length}</p>
                 </div>
             `;
+        }
+
+        function generatePrintableChecklist() {
+            const programName = document.getElementById('programName').value;
+            const closureDate = document.getElementById('closureDate').value;
+            const building = document.getElementById('building').value;
+            const closureType = document.getElementById('closureType').value;
+            
+            const checklist = document.getElementById('printableChecklist');
+            checklist.classList.remove('hidden');
+            
+            let checklistHTML = `
+                <div style="background: white; padding: 2rem; border: 1px solid #d1d5db; border-radius: 0.5rem; margin-top: 2rem;">
+                    <div style="text-align: center; margin-bottom: 2rem; border-bottom: 2px solid #0ea5e9; padding-bottom: 1rem;">
+                        <h2 style="color: #0ea5e9; margin: 0;">BronxWorks Program Closure Checklist</h2>
+                        <p style="margin: 0.5rem 0 0 0; color: #6b7280;">${programName} - ${building}</p>
+                    </div>
+                    
+                    <div style="margin-bottom: 2rem;">
+                        <h3 style="color: #1f2937; margin-bottom: 1rem;">Program Details</h3>
+                        <p><strong>Program:</strong> ${programName}</p>
+                        <p><strong>Director:</strong> ${document.getElementById('programDirector').value}</p>
+                        <p><strong>Closure Type:</strong> ${closureType}</p>
+                        <p><strong>Closure Date:</strong> ${closureDate}</p>
+                        <p><strong>Location:</strong> ${building}, ${document.getElementById('rooms').value}</p>
+                        <p><strong>Address:</strong> ${document.getElementById('address').value}</p>
+                    </div>
+            `;
+
+            if (equipmentList.length > 0) {
+                checklistHTML += `
+                    <div style="margin-bottom: 2rem;">
+                        <h3 style="color: #1f2937; margin-bottom: 1rem;">Equipment Disposition</h3>
+                        ${equipmentList.map(item => `
+                            <div style="margin-bottom: 0.5rem;">
+                                <input type="checkbox" style="margin-right: 0.5rem;">
+                                <strong>${item.type.replace('-', ' ')}:</strong> ${item.description} 
+                                <em>(${item.disposition.replace('-', ' ')})</em>
+                            </div>
+                        `).join('')}
+                    </div>
+                `;
+            }
+
+            if (serviceContacts.length > 0) {
+                checklistHTML += `
+                    <div style="margin-bottom: 2rem;">
+                        <h3 style="color: #1f2937; margin-bottom: 1rem;">Service Contacts</h3>
+                        ${serviceContacts.map(contact => `
+                            <div style="margin-bottom: 0.5rem;">
+                                <input type="checkbox" style="margin-right: 0.5rem;">
+                                <strong>${contact.type.replace('-', ' ')}:</strong> ${contact.name} - ${contact.phone}
+                                ${contact.email ? ` (${contact.email})` : ''}
+                            </div>
+                        `).join('')}
+                    </div>
+                `;
+            }
+
+            if (furnitureList.length > 0) {
+                checklistHTML += `
+                    <div style="margin-bottom: 2rem;">
+                        <h3 style="color: #1f2937; margin-bottom: 1rem;">Furniture & Assets</h3>
+                        ${furnitureList.map(item => `
+                            <div style="margin-bottom: 0.5rem;">
+                                <input type="checkbox" style="margin-right: 0.5rem;">
+                                <strong>${item.type}:</strong> ${item.description} (Qty: ${item.quantity}) 
+                                <em>(${item.disposition.replace('-', ' ')})</em>
+                            </div>
+                        `).join('')}
+                    </div>
+                `;
+            }
+
+            const customReqs = document.getElementById('customRequirements').value;
+            const stakeholders = document.getElementById('stakeholders').value;
+            const timeline = document.getElementById('timeline').value;
+
+            if (customReqs || stakeholders || timeline) {
+                checklistHTML += `<div style="margin-bottom: 2rem;"><h3 style="color: #1f2937; margin-bottom: 1rem;">Additional Requirements</h3>`;
+                
+                if (customReqs) {
+                    checklistHTML += `<div style="margin-bottom: 1rem;"><strong>Special Requirements:</strong><br>${customReqs.replace(/\n/g, '<br>')}</div>`;
+                }
+                if (stakeholders) {
+                    checklistHTML += `<div style="margin-bottom: 1rem;"><strong>Stakeholders to Notify:</strong><br>${stakeholders.replace(/\n/g, '<br>')}</div>`;
+                }
+                if (timeline) {
+                    checklistHTML += `<div style="margin-bottom: 1rem;"><strong>Timeline Items:</strong><br>${timeline.replace(/\n/g, '<br>')}</div>`;
+                }
+                
+                checklistHTML += `</div>`;
+            }
+
+            checklistHTML += `
+                    <div style="margin-top: 3rem; text-align: center; color: #6b7280; font-size: 0.9rem; border-top: 1px solid #e5e7eb; padding-top: 1rem;">
+                        Generated on ${new Date().toLocaleDateString()} | BronxWorks Program Closure Coordination System
+                    </div>
+                </div>
+                <div style="text-align: center; margin-top: 1rem;">
+                    <button class="btn" onclick="window.print()">🖨️ Print Checklist</button>
+                </div>
+            `;
+            
+            checklist.innerHTML = checklistHTML;
         }
 
         // Initialize
