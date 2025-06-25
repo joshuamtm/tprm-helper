@@ -3,10 +3,7 @@ name: Deploy BronxWorks Program Closure System to Pages
 on:
   push:
     branches: [ "main" ]
-    paths: [ "bronxworks-program-closure/**" ]
-  pull_request:
-    branches: [ "main" ]
-    paths: [ "bronxworks-program-closure/**" ]
+    paths: [ "bronxworks-program-closure/**", "bronxworks-closeout-poc/**", "docs/**" ]
   workflow_dispatch:
 
 permissions:
@@ -37,12 +34,30 @@ jobs:
           cd bronxworks-program-closure
           npm ci
 
-      - name: Build application
+      - name: Build production application
         run: |
           cd bronxworks-program-closure
           npm run build
         env:
           NODE_ENV: production
+
+      - name: Build POC application
+        run: |
+          cd bronxworks-closeout-poc
+          npm ci
+          npm run build
+
+      - name: Create deployment directory
+        run: |
+          mkdir -p deployment
+          # Copy docs (landing page)
+          cp -r docs/* deployment/
+          # Copy production app
+          mkdir -p deployment/bronxworks-program-closure
+          cp -r bronxworks-program-closure/dist/* deployment/bronxworks-program-closure/
+          # Copy POC
+          mkdir -p deployment/bronxworks-closeout-poc
+          cp -r bronxworks-closeout-poc/dist/* deployment/bronxworks-closeout-poc/
 
       - name: Setup Pages
         uses: actions/configure-pages@v4
@@ -50,7 +65,7 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: './bronxworks-program-closure/dist'
+          path: './deployment'
 
   deploy:
     environment:

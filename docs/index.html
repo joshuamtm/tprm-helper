@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BronxWorks Program Closure Solutions</title>
+    <style>
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: linear-gradient(135deg, #f0f9ff 0%, #ffffff 50%, #e0f2fe 100%);
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .container {
+            max-width: 800px;
+            padding: 3rem;
+            text-align: center;
+            background: white;
+            border-radius: 1.5rem;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.1);
+            border: 1px solid #e5e7eb;
+        }
+        .logo {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, #0ea5e9, #3b82f6);
+            border-radius: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 2rem;
+            color: white;
+            font-size: 2rem;
+            font-weight: bold;
+        }
+        h1 {
+            color: #1f2937;
+            font-size: 2.5rem;
+            font-weight: 800;
+            margin-bottom: 1rem;
+            line-height: 1.2;
+        }
+        .subtitle {
+            color: #6b7280;
+            font-size: 1.25rem;
+            margin-bottom: 3rem;
+            line-height: 1.6;
+        }
+        .apps {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+        .app-card {
+            padding: 2rem;
+            border: 2px solid #e5e7eb;
+            border-radius: 1rem;
+            text-decoration: none;
+            color: inherit;
+            transition: all 0.3s ease;
+            background: #f9fafb;
+        }
+        .app-card:hover {
+            border-color: #0ea5e9;
+            background: #f0f9ff;
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
+        }
+        .app-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: #1f2937;
+            margin-bottom: 0.5rem;
+        }
+        .app-desc {
+            color: #6b7280;
+            font-size: 0.9rem;
+            line-height: 1.5;
+        }
+        .status {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            border-radius: 9999px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            margin-top: 1rem;
+        }
+        .production {
+            background: #dcfce7;
+            color: #166534;
+        }
+        .demo {
+            background: #fef3c7;
+            color: #92400e;
+        }
+        @media (max-width: 640px) {
+            .apps {
+                grid-template-columns: 1fr;
+            }
+            .container {
+                margin: 1rem;
+                padding: 2rem;
+            }
+            h1 {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="logo">BX</div>
+        <h1>BronxWorks Program Closure Solutions</h1>
+        <p class="subtitle">
+            Efficiently coordinate program closures across multiple departments while ensuring nothing is missed, 
+            no resources are wasted, and all stakeholders have the information they need to act.
+        </p>
+        
+        <div class="apps">
+            <a href="../bronxworks-program-closure/index.html" class="app-card">
+                <div class="app-title">🚀 Production Application</div>
+                <div class="app-desc">
+                    Complete program closure coordination system with 10-step guided form, 
+                    multi-stakeholder reports, and comprehensive validation.
+                </div>
+                <div class="status production">✅ PRODUCTION READY</div>
+            </a>
+            
+            <a href="../bronxworks-closeout-poc/index.html" class="app-card">
+                <div class="app-title">🧪 Proof of Concept</div>
+                <div class="app-desc">
+                    Original demonstration application that validated the approach 
+                    and user interface concepts.
+                </div>
+                <div class="status demo">📋 DEMO</div>
+            </a>
+        </div>
+        
+        <p style="color: #6b7280; font-size: 0.9rem; margin-top: 2rem;">
+            📖 <a href="https://github.com/joshuamtm/bxwx-program-closeout" style="color: #0ea5e9; text-decoration: none;">View Documentation & Source Code</a>
+        </p>
+    </div>
+
+    <script>
+        // Auto-redirect to production app after 5 seconds if no interaction
+        let redirectTimer = setTimeout(() => {
+            window.location.href = '../bronxworks-program-closure/index.html';
+        }, 5000);
+
+        // Cancel redirect if user interacts
+        document.addEventListener('click', () => clearTimeout(redirectTimer));
+        document.addEventListener('keydown', () => clearTimeout(redirectTimer));
+    </script>
+</body>
+</html>
