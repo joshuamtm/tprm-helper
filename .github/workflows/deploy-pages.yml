@@ -46,6 +46,8 @@ jobs:
           mkdir -p _site
           # Copy landing page from root
           cp index.html _site/
+          # Copy 404 handler for SPA routing
+          cp 404.html _site/
           # Copy PHI Helper backup
           cp phi-helper.html _site/
           cp style.css _site/
