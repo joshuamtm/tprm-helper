@@ -1,0 +1,31 @@
+import { Database, Lightbulb } from 'lucide-react';
+
+export function DigitalAssetsStep() {
+
+  return (
+    <div className="space-y-8">
+      <div className="guidance-panel">
+        <div className="flex items-center gap-3 mb-3">
+          <Lightbulb className="w-5 h-5 text-blue-600" />
+          <h3 className="text-lg font-semibold text-blue-900">Digital Assets Guidance</h3>
+        </div>
+        <p className="text-blue-800">
+          Ensure proper handling of user accounts, shared drives, and digital resources.
+        </p>
+      </div>
+
+      <div className="text-center py-12">
+        <Database className="w-16 h-16 text-gray-400 mx-auto mb-4" />
+        <h3 className="text-xl font-semibold text-gray-600 mb-2">Digital Assets & User Accounts</h3>
+        <p className="text-gray-500 mb-6">
+          This step will collect information about user accounts, shared drives, and data backup requirements.
+        </p>
+        <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4 max-w-md mx-auto">
+          <p className="text-yellow-800 text-sm">
+            <strong>Coming Soon:</strong> Digital asset inventory and account deactivation planning.
+          </p>
+        </div>
+      </div>
+    </div>
+  );
+}

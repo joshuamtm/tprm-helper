@@ -7,20 +7,36 @@ const styles = StyleSheet.create({
     padding: 40,
     fontSize: 11,
     fontFamily: 'Helvetica',
+    backgroundColor: '#ffffff',
   },
   header: {
-    marginBottom: 20,
-    borderBottom: '2 solid #000',
-    paddingBottom: 10,
+    marginBottom: 30,
+    borderBottom: '3 solid #2bc4b2',
+    paddingBottom: 15,
+    backgroundColor: '#f0fdfa',
+    padding: 20,
+    borderRadius: 8,
   },
   title: {
-    fontSize: 20,
+    fontSize: 24,
     fontWeight: 'bold',
-    marginBottom: 5,
+    marginBottom: 8,
+    color: '#134e4a',
+    textAlign: 'center',
+    letterSpacing: 1,
   },
   subtitle: {
     fontSize: 14,
-    color: '#666',
+    color: '#2bc4b2',
+    textAlign: 'center',
+    fontWeight: 'bold',
+  },
+  organizationName: {
+    fontSize: 18,
+    color: '#f7215e',
+    textAlign: 'center',
+    fontWeight: 'bold',
+    marginBottom: 5,
   },
   section: {
     marginBottom: 20,
@@ -28,9 +44,11 @@ const styles = StyleSheet.create({
   sectionTitle: {
     fontSize: 14,
     fontWeight: 'bold',
-    marginBottom: 10,
-    backgroundColor: '#f0f0f0',
-    padding: 5,
+    marginBottom: 12,
+    backgroundColor: '#2bc4b2',
+    color: '#ffffff',
+    padding: 8,
+    borderRadius: 4,
   },
   row: {
     flexDirection: 'row',
@@ -48,8 +66,9 @@ const styles = StyleSheet.create({
   },
   tableHeader: {
     flexDirection: 'row',
-    backgroundColor: '#e0e0e0',
-    padding: 5,
+    backgroundColor: '#2bc4b2',
+    color: '#ffffff',
+    padding: 8,
     fontWeight: 'bold',
   },
   tableRow: {
@@ -68,17 +87,23 @@ const styles = StyleSheet.create({
     right: 40,
     textAlign: 'center',
     fontSize: 9,
-    color: '#666',
+    color: '#2bc4b2',
+    borderTop: '1 solid #2bc4b2',
+    paddingTop: 8,
   },
   contactBox: {
-    border: '1 solid #ccc',
-    padding: 10,
+    border: '2 solid #2bc4b2',
+    padding: 12,
     marginBottom: 10,
+    backgroundColor: '#f0fdfa',
+    borderRadius: 4,
   },
   equipmentItem: {
-    marginBottom: 10,
-    padding: 5,
-    backgroundColor: '#f9f9f9',
+    marginBottom: 12,
+    padding: 8,
+    backgroundColor: '#f0fdfa',
+    border: '1 solid #ccfbf1',
+    borderRadius: 4,
   },
 });
 
@@ -97,9 +122,10 @@ export function CloseoutPDF({ data }: CloseoutPDFProps) {
     <Document>
       <Page size="A4" style={styles.page}>
         <View style={styles.header}>
+          <Text style={styles.organizationName}>BRONXWORKS</Text>
           <Text style={styles.title}>PROGRAM CLOSEOUT REPORT</Text>
-          <Text style={styles.subtitle}>BronxWorks IT & Operations Department</Text>
-          <Text style={styles.subtitle}>Generated: {format(new Date(), 'MMMM d, yyyy h:mm a')}</Text>
+          <Text style={styles.subtitle}>IT & Operations Department</Text>
+          <Text style={[styles.subtitle, { fontSize: 10, marginTop: 8 }]}>Generated: {format(new Date(), 'MMMM d, yyyy h:mm a')}</Text>
         </View>
 
         <View style={styles.section}>
@@ -171,7 +197,7 @@ export function CloseoutPDF({ data }: CloseoutPDFProps) {
         </View>
 
         <View style={styles.footer}>
-          <Text>Page 1 of 3 - Program Closeout Report - {data.programName}</Text>
+          <Text>Page 1 of 3 | BronxWorks Program Closeout Report | {data.programName}</Text>
         </View>
       </Page>
 
@@ -230,7 +256,7 @@ export function CloseoutPDF({ data }: CloseoutPDFProps) {
         </View>
 
         <View style={styles.footer}>
-          <Text>Page 2 of 3 - Program Closeout Report - {data.programName}</Text>
+          <Text>Page 2 of 3 | BronxWorks Program Closeout Report | {data.programName}</Text>
         </View>
       </Page>
 
@@ -314,7 +340,7 @@ export function CloseoutPDF({ data }: CloseoutPDFProps) {
         )}
 
         <View style={styles.footer}>
-          <Text>Page 3 of 3 - Program Closeout Report - {data.programName}</Text>
+          <Text>Page 3 of 3 | BronxWorks Program Closeout Report | {data.programName}</Text>
         </View>
       </Page>
     </Document>
