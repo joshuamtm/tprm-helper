@@ -1,0 +1,68 @@
+name: Deploy POC Demo to Pages
+
+on:
+  push:
+    branches: [ "main" ]
+    paths: [ "bronxworks-closeout-poc/**" ]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: "poc-pages"
+  cancel-in-progress: false
+
+jobs:
+  build-poc:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+          cache-dependency-path: bronxworks-closeout-poc/package-lock.json
+
+      - name: Install dependencies
+        run: |
+          cd bronxworks-closeout-poc
+          npm ci
+
+      - name: Build POC application
+        run: |
+          cd bronxworks-closeout-poc
+          npm run build
+        env:
+          NODE_ENV: production
+
+      - name: Create deployment directory
+        run: |
+          mkdir -p deployment
+          cp -r bronxworks-closeout-poc/dist/* deployment/
+          # Create a simple index page that redirects to the main app
+          cat > deployment/poc.html << 'EOF'
+          <!DOCTYPE html>
+          <html lang="en">
+          <head>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <title>BronxWorks POC Demo</title>
+            <meta http-equiv="refresh" content="0; url=./index.html">
+          </head>
+          <body>
+            <p>Redirecting to <a href="./index.html">BronxWorks Program Closeout POC</a>...</p>
+          </body>
+          </html>
+          EOF
+
+      - name: Upload POC artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: poc-demo
+          path: './deployment'
