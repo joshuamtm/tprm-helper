@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PHI Vendor Recommendation Assistant</title>
+    <meta name="description" content="AI-powered vendor recommendation chatbot for PHI programs">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <header class="header" role="banner">
+            <h1>PHI Vendor Recommendation Assistant</h1>
+            <p>Get intelligent recommendations for software, hardware, and vendor solutions</p>
+        </header>
+
+        <div class="chat-container" role="main">
+            <div class="messages" id="messages" role="log" aria-label="Chat messages" aria-live="polite">
+                <!-- Introduction message will be added by JavaScript -->
+            </div>
+
+            <div class="typing-indicator" id="typingIndicator" aria-hidden="true">
+                <div class="bot-avatar" role="img" aria-label="Assistant typing"></div>
+                <div style="display: flex; align-items: center;">
+                    <div class="typing-dot"></div>
+                    <div class="typing-dot"></div>
+                    <div class="typing-dot"></div>
+                </div>
+            </div>
+
+            <div class="input-container">
+                <form class="input-wrapper" onsubmit="chatbot.sendMessage(); return false;" role="form">
+                    <label for="userInput" class="sr-only">Type your message</label>
+                    <input 
+                        type="text" 
+                        id="userInput" 
+                        placeholder="Type your question here..."
+                        aria-label="Type your message"
+                        autocomplete="off"
+                        maxlength="500"
+                    />
+                    <button type="submit" id="sendButton" aria-label="Send message">Send</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="vendors.js"></script>
+    <script src="chatbot.js"></script>
+</body>
+</html>

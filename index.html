@@ -3,50 +3,180 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PHI Vendor Recommendation Assistant</title>
-    <meta name="description" content="AI-powered vendor recommendation chatbot for PHI programs">
-    <link rel="stylesheet" href="style.css">
+    <title>BronxWorks Program Closure Solutions</title>
+    <meta name="description" content="Efficiently coordinate program closures across multiple departments at BronxWorks">
+    <style>
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: linear-gradient(135deg, #f0f9ff 0%, #ffffff 50%, #e0f2fe 100%);
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .container {
+            max-width: 800px;
+            padding: 3rem;
+            text-align: center;
+            background: white;
+            border-radius: 1.5rem;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.1);
+            border: 1px solid #e5e7eb;
+        }
+        .logo {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, #0ea5e9, #3b82f6);
+            border-radius: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 2rem;
+            color: white;
+            font-size: 2rem;
+            font-weight: bold;
+        }
+        h1 {
+            color: #1f2937;
+            font-size: 2.5rem;
+            font-weight: 800;
+            margin-bottom: 1rem;
+            line-height: 1.2;
+        }
+        .subtitle {
+            color: #6b7280;
+            font-size: 1.25rem;
+            margin-bottom: 3rem;
+            line-height: 1.6;
+        }
+        .apps {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+        .app-card {
+            padding: 2rem;
+            border: 2px solid #e5e7eb;
+            border-radius: 1rem;
+            text-decoration: none;
+            color: inherit;
+            transition: all 0.3s ease;
+            background: #f9fafb;
+            cursor: pointer;
+        }
+        .app-card:hover {
+            border-color: #0ea5e9;
+            background: #f0f9ff;
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
+        }
+        .app-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: #1f2937;
+            margin-bottom: 0.5rem;
+        }
+        .app-desc {
+            color: #6b7280;
+            font-size: 0.9rem;
+            line-height: 1.5;
+        }
+        .status {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            border-radius: 9999px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            margin-top: 1rem;
+        }
+        .production {
+            background: #dcfce7;
+            color: #166534;
+        }
+        .demo {
+            background: #fef3c7;
+            color: #92400e;
+        }
+        .legacy {
+            display: block;
+            margin-top: 2rem;
+            padding: 1rem;
+            background: #f3f4f6;
+            border-radius: 0.5rem;
+            border: 1px solid #d1d5db;
+        }
+        .legacy a {
+            color: #6b7280;
+            text-decoration: none;
+            font-size: 0.9rem;
+        }
+        .legacy a:hover {
+            color: #374151;
+        }
+        @media (max-width: 640px) {
+            .apps {
+                grid-template-columns: 1fr;
+            }
+            .container {
+                margin: 1rem;
+                padding: 2rem;
+            }
+            h1 {
+                font-size: 2rem;
+            }
+        }
+    </style>
 </head>
 <body>
     <div class="container">
-        <header class="header" role="banner">
-            <h1>PHI Vendor Recommendation Assistant</h1>
-            <p>Get intelligent recommendations for software, hardware, and vendor solutions</p>
-        </header>
-
-        <div class="chat-container" role="main">
-            <div class="messages" id="messages" role="log" aria-label="Chat messages" aria-live="polite">
-                <!-- Introduction message will be added by JavaScript -->
-            </div>
-
-            <div class="typing-indicator" id="typingIndicator" aria-hidden="true">
-                <div class="bot-avatar" role="img" aria-label="Assistant typing"></div>
-                <div style="display: flex; align-items: center;">
-                    <div class="typing-dot"></div>
-                    <div class="typing-dot"></div>
-                    <div class="typing-dot"></div>
+        <div class="logo">BX</div>
+        <h1>BronxWorks Program Closure Solutions</h1>
+        <p class="subtitle">
+            Efficiently coordinate program closures across multiple departments while ensuring nothing is missed, 
+            no resources are wasted, and all stakeholders have the information they need to act.
+        </p>
+        
+        <div class="apps">
+            <div class="app-card" onclick="window.location.href='./bronxworks-program-closure/index.html'">
+                <div class="app-title">🚀 Production Application</div>
+                <div class="app-desc">
+                    Complete program closure coordination system with 10-step guided form, 
+                    multi-stakeholder reports, and comprehensive validation.
                 </div>
+                <div class="status production">✅ PRODUCTION READY</div>
             </div>
-
-            <div class="input-container">
-                <form class="input-wrapper" onsubmit="chatbot.sendMessage(); return false;" role="form">
-                    <label for="userInput" class="sr-only">Type your message</label>
-                    <input 
-                        type="text" 
-                        id="userInput" 
-                        placeholder="Type your question here..."
-                        aria-label="Type your message"
-                        autocomplete="off"
-                        maxlength="500"
-                    />
-                    <button type="submit" id="sendButton" aria-label="Send message">Send</button>
-                </form>
+            
+            <div class="app-card" onclick="window.location.href='./bronxworks-closeout-poc/index.html'">
+                <div class="app-title">🧪 Proof of Concept</div>
+                <div class="app-desc">
+                    Original demonstration application that validated the approach 
+                    and user interface concepts.
+                </div>
+                <div class="status demo">📋 DEMO</div>
             </div>
+        </div>
+        
+        <div class="legacy">
+            <p style="margin: 0; color: #6b7280; font-size: 0.9rem;">
+                📖 <a href="https://github.com/joshuamtm/bxwx-program-closeout">View Documentation & Source Code</a>
+                | <a href="./phi-helper.html">Previous PHI Helper Application</a>
+            </p>
         </div>
     </div>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-    <script src="vendors.js"></script>
-    <script src="chatbot.js"></script>
+    <script>
+        // Auto-redirect to production app after 5 seconds if no interaction
+        let redirectTimer = setTimeout(() => {
+            window.location.href = './bronxworks-program-closure/index.html';
+        }, 5000);
+
+        // Cancel redirect if user interacts
+        document.addEventListener('click', () => clearTimeout(redirectTimer));
+        document.addEventListener('keydown', () => clearTimeout(redirectTimer));
+        document.addEventListener('mousemove', () => clearTimeout(redirectTimer));
+    </script>
 </body>
 </html>

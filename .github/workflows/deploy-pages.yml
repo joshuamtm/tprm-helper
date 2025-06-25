@@ -44,8 +44,13 @@ jobs:
       - name: Setup deployment
         run: |
           mkdir -p _site
-          # Copy landing page
-          cp docs/index.html _site/
+          # Copy landing page from root
+          cp index.html _site/
+          # Copy PHI Helper backup
+          cp phi-helper.html _site/
+          cp style.css _site/
+          cp chatbot.js _site/
+          cp vendors.js _site/
           # Copy production app
           mkdir -p _site/bronxworks-program-closure
           cp -r bronxworks-program-closure/dist/* _site/bronxworks-program-closure/
