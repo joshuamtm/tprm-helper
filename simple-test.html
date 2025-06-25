@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BronxWorks Test Page</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #f0f9ff, #e0f2fe);
+            margin: 0;
+            padding: 2rem;
+            min-height: 100vh;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            padding: 2rem;
+            border-radius: 1rem;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+        }
+        .logo {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, #0ea5e9, #3b82f6);
+            border-radius: 0.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1rem;
+            color: white;
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+        h1 { text-align: center; color: #1f2937; margin-bottom: 2rem; }
+        .status {
+            background: #fef3c7;
+            border: 1px solid #f59e0b;
+            color: #92400e;
+            padding: 1rem;
+            border-radius: 0.5rem;
+            margin: 1rem 0;
+            text-align: center;
+        }
+        .actions {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-top: 2rem;
+        }
+        .btn {
+            background: #0ea5e9;
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            text-decoration: none;
+            font-weight: 500;
+        }
+        .btn:hover { background: #0284c7; }
+        .btn-secondary { background: #6b7280; }
+        .btn-secondary:hover { background: #4b5563; }
+        .info {
+            background: #f3f4f6;
+            padding: 1rem;
+            border-radius: 0.5rem;
+            margin: 1rem 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="logo">BX</div>
+        <h1>🔧 BronxWorks Applications - Troubleshooting</h1>
+        
+        <div class="status">
+            ⚠️ The React applications are showing blank pages. This test page confirms GitHub Pages is working.
+        </div>
+        
+        <div class="info">
+            <h3>What should be working:</h3>
+            <ul>
+                <li><strong>Production App:</strong> 10-step program closure coordination system</li>
+                <li><strong>POC Demo:</strong> Original proof-of-concept application</li>
+                <li><strong>Features:</strong> Forms, validation, reports, auto-save</li>
+            </ul>
+        </div>
+        
+        <div class="info">
+            <h3>Troubleshooting Steps:</h3>
+            <ol>
+                <li>Check browser console for JavaScript errors</li>
+                <li>Verify React build assets are loading</li>
+                <li>Test with different browsers</li>
+                <li>Check network requests for failed resources</li>
+            </ol>
+        </div>
+        
+        <div class="actions">
+            <a href="./" class="btn btn-secondary">← Back to Landing Page</a>
+            <button class="btn" onclick="testApp()">🔄 Test React Loading</button>
+            <button class="btn" onclick="openDevTools()">🔍 Check Console</button>
+        </div>
+        
+        <div id="test-results" style="margin-top: 2rem; padding: 1rem; background: #f8f9fa; border-radius: 0.5rem; font-family: monospace; white-space: pre-wrap; display: none;"></div>
+    </div>
+
+    <script>
+        function log(message) {
+            const results = document.getElementById('test-results');
+            results.style.display = 'block';
+            results.textContent += new Date().toLocaleTimeString() + ': ' + message + '\n';
+        }
+
+        function testApp() {
+            log('🧪 Testing React app loading...');
+            log('Current URL: ' + window.location.href);
+            
+            // Test production app
+            fetch('./bronxworks-program-closure/')
+                .then(response => {
+                    if (response.ok) {
+                        log('✅ Production app directory accessible');
+                        return response.text();
+                    } else {
+                        log('❌ Production app returned ' + response.status);
+                        throw new Error('Failed to load');
+                    }
+                })
+                .then(html => {
+                    if (html.includes('BronxWorks')) {
+                        log('✅ Production app HTML contains BronxWorks content');
+                    } else {
+                        log('❌ Production app HTML missing expected content');
+                    }
+                })
+                .catch(error => {
+                    log('❌ Production app error: ' + error.message);
+                });
+            
+            // Test POC app
+            fetch('./bronxworks-closeout-poc/')
+                .then(response => {
+                    if (response.ok) {
+                        log('✅ POC app directory accessible');
+                        return response.text();
+                    } else {
+                        log('❌ POC app returned ' + response.status);
+                        throw new Error('Failed to load');
+                    }
+                })
+                .then(html => {
+                    if (html.includes('Vite') || html.includes('React')) {
+                        log('✅ POC app HTML contains expected content');
+                    } else {
+                        log('❌ POC app HTML missing expected content');
+                    }
+                })
+                .catch(error => {
+                    log('❌ POC app error: ' + error.message);
+                });
+        }
+
+        function openDevTools() {
+            log('💡 Open browser Developer Tools (F12) and check:');
+            log('1. Console tab for JavaScript errors');
+            log('2. Network tab for failed resource loads');
+            log('3. Try navigating to the apps manually');
+            
+            alert('Open Developer Tools (F12) and check Console/Network tabs for errors when loading the React apps.');
+        }
+
+        // Auto-run test
+        setTimeout(testApp, 1000);
+    </script>
+</body>
+</html>
